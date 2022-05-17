@@ -1,10 +1,12 @@
 package entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cliente {
+public class Cliente implements Serializable {
 
+    static final long serialVersionUID = 123;
     protected String nome;
     protected String nomeUsuario;
     protected String senha;
