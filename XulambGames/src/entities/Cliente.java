@@ -101,6 +101,17 @@ public class Cliente {
         return (this.senha == senha) ? true : false;
     }
 
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(nome);
+        sb.append(";");
+        sb.append(nomeUsuario);
+        sb.append(";");
+        sb.append(senha);
+
+        return sb.toString();
+    }
+
     //#region PENDÊNCIAS
     /*
      * Pendência 1- futuramente tem que fazer um "check" no construtor (ou outro meio)
