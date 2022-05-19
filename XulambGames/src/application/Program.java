@@ -1,85 +1,72 @@
 package application;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
 import entities.Cliente;
+import entities.Compra;
+import entities.Jogo;
 
 public class Program {
+
+    public static final String ARQ_DADOS = "clientes.bin";
 
     public static void main(String[] args) {
 
         TreeMap<String, Cliente> clientes = new TreeMap<>();
+        ArrayList<Compra> compras = new ArrayList<Compra>();
+        ArrayList<Jogo> jogos = new ArrayList<Jogo>();
+        
         Cliente c = new Cliente("Leticia", "leticia", "1234");
         Cliente c1 = new Cliente("Leticia", "leticia1", "1234");
+
+        jogos.add(new Jogo("BTD6"));
+        compras.add(new Compra(200, jogos));
+        
+        c.setCompraList(compras);
 
         clientes.put(c.getNomeUsuario(), c);
         clientes.put(c1.getNomeUsuario(), c1);
 
-        escreverClientes(clientes);
-        lerClientes();
+        escreverClientes(clientes, ARQ_DADOS);
+        lerClientes(ARQ_DADOS);
     }
 
-    private static void escreverClientes(TreeMap<String, Cliente> clientes) {
+    public static void escreverClientes(TreeMap<String, Cliente> clientes, String nomeArq) {
 
         try {
 
-            FileOutputStream fout = new FileOutputStream("clientes.bin");
-
-            /*
-             * A Classe ObjectOutputStream escreve os objetos no FileOutputStream
-             */
-            ObjectOutputStream oos = new ObjectOutputStream(fout);
-
-            /*
-             * Veja aqui a mágica ocorrendo: Estamos gravando um objeto
-             * do tipo Address no arquivo address.ser. Atenção: O nosso
-             * objeto Address que está sendo gravado, já é gravado de forma
-             * serializada
-             */
-            oos.writeObject(clientes);
-
-            oos.close();
+            FileOutputStream fout = new FileOutputStream(nomeArq);
+            ObjectOutputStream arqSaida = new ObjectOutputStream(fout);
+            arqSaida.writeObject(clientes);
+            arqSaida.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
     }
 
-    private static void lerClientes() {
-        FileInputStream fin;
+    public static void lerClientes(String nomeArq) {
+        FileInputStream arq;
         try {
-            fin = new FileInputStream("clientes.bin");
+            arq = new FileInputStream(nomeArq);
 
-            /*
-             * Responsável por ler o objeto referente ao arquivo
-             */
-            ObjectInputStream ois;
+            ObjectInputStream arqLeitura;
+            arqLeitura = new ObjectInputStream(arq);
 
-            ois = new ObjectInputStream(fin);
+            TreeMap<String, Cliente> clientes = (TreeMap<String, Cliente>) arqLeitura.readObject();
 
-            /*
-             * Aqui a mágica é feita, onde os bytes presentes no arquivo address.ser
-             * são convertidos em uma instância de Address.
-             */
-            TreeMap<String, Cliente> clientes = (TreeMap<String, Cliente>) ois.readObject();
-            System.out.println(clientes);
+            for (Cliente c : clientes.values()) {
+                System.out.println(c);
+            }
 
-            ois.close();
+            arqLeitura.close();
         } catch (Exception e) {
 
             e.printStackTrace();
         }
-
     }
 }

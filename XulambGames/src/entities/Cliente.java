@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Cliente implements Serializable {
 
-    static final long serialVersionUID = 123;
+    static final long serialVersionUID = 1;
     protected String nome;
     protected String nomeUsuario;
     protected String senha;
@@ -106,10 +106,14 @@ public class Cliente implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(nome);
-        sb.append(";");
+        sb.append("\t");
         sb.append(nomeUsuario);
-        sb.append(";");
+        sb.append("\t");
         sb.append(senha);
+
+        for (Compra compra : compraList) {
+            sb.append("\nCompra " + compra.toString());
+        }
 
         return sb.toString();
     }

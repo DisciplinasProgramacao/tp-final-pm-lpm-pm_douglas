@@ -1,12 +1,30 @@
 package entities;
 
-public class Compra {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-    public Compra(){
+public class Compra implements Serializable {
 
+    static final long serialVersionUID = 2;
+    private double valorPago;
+    private List<Jogo> jogos;
+
+    public Compra(double v){
+        valorPago = v;
+    };
+
+    public Compra(double v, ArrayList<Jogo> j){
+        valorPago = v;
+        jogos = j;
     };
 
     public String toString() {
-        return "Compra";
+        StringBuilder sb = new StringBuilder();
+        sb.append(valorPago);
+        for (Jogo jogo : jogos) {
+            sb.append("\nJogo: " + jogo.toString());
+        }
+        return sb.toString();
     }
 }
