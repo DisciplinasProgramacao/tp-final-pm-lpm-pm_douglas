@@ -23,7 +23,7 @@ public class Compra implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append(valorPago);
         for (Jogo jogo : jogos) {
-            sb.append("\nJogo: " + jogo.toString());
+            sb.append("\n + Jogo: " + jogo.toString());
         }
         return sb.toString();
     }

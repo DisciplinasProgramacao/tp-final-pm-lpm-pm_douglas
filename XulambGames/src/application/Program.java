@@ -32,7 +32,7 @@ public class Program {
         clientes.put(c.getNomeUsuario(), c);
         clientes.put(c1.getNomeUsuario(), c1);
 
-        escreverClientes(clientes, ARQ_DADOS);
+        // escreverClientes(clientes, ARQ_DADOS);
         lerClientes(ARQ_DADOS);
     }
 

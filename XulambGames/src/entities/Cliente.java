@@ -102,6 +102,23 @@ public class Cliente implements Serializable {
     private boolean verificaSenha(String senha) {
         return (this.senha == senha) ? true : false;
     }
+    
+    public String historico() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Histórico:");
+        
+        if (!compraList.isEmpty()) {
+
+            for (Compra compra : compraList) {
+                sb.append("\nCompra " + compra.toString());
+            }
+        }
+        else {
+            sb.append("\nNão existem compras");
+        }
+        
+        return sb.toString();
+    }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -110,11 +127,8 @@ public class Cliente implements Serializable {
         sb.append(nomeUsuario);
         sb.append("\t");
         sb.append(senha);
-
-        for (Compra compra : compraList) {
-            sb.append("\nCompra " + compra.toString());
-        }
-
+        sb.append('\n');
+        sb.append(historico());
         return sb.toString();
     }
 
