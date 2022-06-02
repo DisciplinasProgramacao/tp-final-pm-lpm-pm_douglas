@@ -1,5 +1,7 @@
 package entities;
 
+import util.XulambException;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,34 +9,55 @@ import java.util.List;
 public class Cliente implements Serializable {
 
     static final long serialVersionUID = 1;
+
+    //#region Atributos
     protected String nome;
     protected String nomeUsuario;
     protected String senha;
-    protected List<Compra> compraList = new ArrayList<>();
+    protected List<Compra> comprasHistorico = new ArrayList<>();
+    //#endregion
 
+    //#region Construtor
+    /**
+     *Construtor.
+     * Não é permitido parâmetro null ou menor que 5 dígitos.
+     * @param nome Nome do cliente.
+     * @param nomeUsuario Nome de usuário.
+     * @param senha Senha do cliente.
+     *
+     */
     public Cliente(String nome, String nomeUsuario, String senha) {
+        if (validaStringNullOuMenorQue5(nome))
+            throw new XulambException("Erro ao criar cliente: nome nulo ou menor que 5 dígitos");
+        if (validaStringNullOuMenorQue5(nomeUsuario))
+            throw new XulambException("Erro ao criar cliente: nomeUsuario nulo ou menor que 5 dígitos");
+        if (validaStringNullOuMenorQue5(senha))
+            throw new XulambException("Erro ao criar cliente: senha nula ou menor que 5 dígitos");
+
         this.nome = nome;
         this.nomeUsuario = nomeUsuario;
         this.senha = senha;
     }
+    //#endregion
 
+    //#region Get e Set
     public String getNome() {
         return nome;
     }
 
     /**
-     * Modifica o nome do cliente desde que a senha informada esteja correta.
-     * @param nome novo nome do cliente.
-     * @param senha senha do cliente.
-     * @return true se foi atendido, false se não foi atendido.
+     * Modifica o nome do cliente.
+     * Não é permitido parâmetro null ou menor que 5 dígitos.
+     * Necessário fornecer a senha.
+     * @param novoNome Novo nome do cliente.
+     * @param senha Senha do cliente.
      */
-    public boolean setNome(String nome, String senha) {
-        if(verificaSenha(senha)) {
-            this.nome = nome;
-            return true;
-        }
-        else
-            return false;
+    public void setNome(String novoNome, String senha) {
+        if(!verificaSenha(senha))
+            throw new XulambException("Erro na alteração do nome: senha incorreta");
+        if (validaStringNullOuMenorQue5(novoNome))
+            throw new XulambException("Erro na alteração do nome: novo nome nulo ou menor que 5 dígitos");
+        this.nome = novoNome;
     }
 
     public String getNomeUsuario() {
@@ -42,81 +65,77 @@ public class Cliente implements Serializable {
     }
 
     /**
-     * Modifica o nome do cliente desde que a senha informada esteja correta.
-     * @param nomeUsuario novo nome de usuário do cliente.
-     * @param senha senha do cliente.
-     * @return true se foi atendido, false se não foi atendido.
+     * Modifica o nome de usuário do cliente.
+     * Não é permitido parâmetro null ou menor que 5 dígitos.
+     * Necessário fornecer a senha.
+     * @param novoNomeUsuario Novo nome de usuário do cliente.
+     * @param senha Senha do cliente.
      */
-    public boolean setNomeUsuario(String nomeUsuario, String senha) {
-        if(verificaSenha(senha)) {
-            this.nomeUsuario = nome;
-            return true;
+    public void setNomeUsuario(String novoNomeUsuario, String senha) {
+        if(!verificaSenha(senha))
+            throw new XulambException("Erro na alteração do nome de usuário: senha incorreta");
+        if (validaStringNullOuMenorQue5(novoNomeUsuario))
+            throw new XulambException("Erro na alteração do nome de usuário: novo nome de usuário nulo ou menor que 5 dígitos");
+        this.nomeUsuario = novoNomeUsuario;
+    }
+
+    /**
+     * Modifica a senha do cliente.
+     * Não é permitido parâmetro null ou menor que 5 dígitos.
+     * Necessário fornecer a senha.
+     * @param senhaNova Nova senha do cliente.
+     * @param senha Senha atual do cliente.
+     */
+    public void setSenha(String senhaNova, String senha) {
+        if(!verificaSenha(senha)) {
+            throw new XulambException("Erro na alteração de senha: senha incorreta");
         }
-        else
-            return false;
-    }
-
-    /**
-     * Obtém a senha do cliente desde que a senha informada esteja correta.
-     * @param senha senha do cliente.
-     * @return String conforme resultado.
-     * Se a senha informada estiver correta, o retorno será a senha.
-     * Se a senha informada estiver incorreta, o retorno será "Senha incorreta!".
-     *
-     */
-    public String getSenha(String senha) {
-        if(verificaSenha(senha))
-            return senha;
-        return "Senha incorreta!";
-    }
-
-    /**
-     * Modifica a senha do cliente desde que a senha informada esteja correta.
-     * @param nomeUsuario novo nome de usuário do cliente.
-     * @param senha senha do cliente.
-     * @return true se foi atendido, false se não foi atendido.
-     */
-
-    /**
-     * Modifica a senha do cliente desde que a senha informada esteja correta.
-     * @param senhaAtual senha atual do cliente.
-     * @param senhaNova nova senha do cliente.
-     * @return true se foi atendido, false se não foi atendido.
-     */
-    public boolean setSenha(String senhaAtual, String senhaNova) {
-        if(verificaSenha(senhaAtual)) {
-            this.senha = senhaNova;
-            return true;
+        if (validaStringNullOuMenorQue5(senhaNova)) {
+            throw new XulambException("Erro na alteração de senha: nova senha nula ou menor que 5 dígitos");
         }
-        return false;
+        this.senha = senhaNova;
     }
 
-    public List<Compra> getCompraList() {
-        return compraList;
+    public List<Compra> getComprasHistorico() {
+        return comprasHistorico;
+    }
+    //#endregion
+
+    //#region Métodos Específicos
+    /**
+     * Adiciona compra ao Histórico do cliente.
+     * Não é permitido parâmetro null.
+     * @param compra Compra a ser adicionada.
+     */
+    public void addCompraAoHistorico(Compra compra) {
+        if(compra == null)
+            throw new XulambException("Erro ao adicionar compra ao histórico do cliente: compra é null!");
+        comprasHistorico.add(compra);
     }
 
-    public void setCompraList(List<Compra> compraList) {
-        this.compraList = compraList;
-    }
-
-    private boolean verificaSenha(String senha) {
-        return (this.senha == senha) ? true : false;
-    }
-    
-    public String historico() {
+    /*
+    * ###ATENÇÃO ###
+    * Necessário fazer 2 tipos de relatórios
+    * 1 - por categoria de jogo
+    * 2 - por data
+    * O méotodo "historicoCompleto" está sendo usado pelo "toString"
+    * Talvez seja melhor fazer um "tostring" curto somente com nome e nome de usuário ou algo semelhante
+    * Talvez vale a pena deixar esse "historicoCompleto" ou simplesmente tirar tudo
+    * */
+    public String historicoCompleto() {
         StringBuilder sb = new StringBuilder();
         sb.append("Histórico:");
-        
-        if (!compraList.isEmpty()) {
 
-            for (Compra compra : compraList) {
+        if (!comprasHistorico.isEmpty()) {
+
+            for (Compra compra : comprasHistorico) {
                 sb.append("\nCompra " + compra.toString());
             }
         }
         else {
             sb.append("\nNão existem compras");
         }
-        
+
         return sb.toString();
     }
 
@@ -128,16 +147,18 @@ public class Cliente implements Serializable {
         sb.append("\t");
         sb.append(senha);
         sb.append('\n');
-        sb.append(historico());
+        sb.append(historicoCompleto());
         return sb.toString();
     }
 
-    //#region PENDÊNCIAS
-    /*
-     * Pendência 1- futuramente tem que fazer um "check" no construtor (ou outro meio)
-     * para conferir se a senha está dentro de um padrão (exemplo: mínimo 6 dígitos)
-     *
-     * Pendência 2-
-     * */
+    private boolean verificaSenha(String senha) {
+        return (this.senha == senha) ? true : false;
+    }
+
+    private boolean validaStringNullOuMenorQue5(String s) {
+        if (s == null || s.length() < 5)
+            return true;
+        return false;
+    }
     //#endregion
 }

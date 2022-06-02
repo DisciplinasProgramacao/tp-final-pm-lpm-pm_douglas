@@ -27,7 +27,7 @@ public class Program {
         jogos.add(new Jogo("BTD6"));
         compras.add(new Compra(200, jogos));
         
-        c.setCompraList(compras);
+        c.setComprasHistorico(compras);
 
         clientes.put(c.getNomeUsuario(), c);
         clientes.put(c1.getNomeUsuario(), c1);
