@@ -19,11 +19,12 @@ public abstract class Cliente implements Serializable {
 
     //#region Construtor
     /**
-     *Construtor.
+     * Construtor.
      * Não é permitido parâmetro null ou menor que 5 dígitos.
      * @param nome Nome do cliente.
      * @param nomeUsuario Nome de usuário.
      * @param senha Senha do cliente.
+     * @throws XulambException devido os parâmetros forem nulos ou menor que 5 dígitos.
      *
      */
     public Cliente(String nome, String nomeUsuario, String senha) {
