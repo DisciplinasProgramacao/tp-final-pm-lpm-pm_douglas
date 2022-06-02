@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cliente implements Serializable {
+public abstract class Cliente implements Serializable {
 
     static final long serialVersionUID = 1;
 
@@ -160,5 +160,28 @@ public class Cliente implements Serializable {
             return true;
         return false;
     }
+    //#endregion
+
+    //#region Métodos Abstract
+    /**
+     * Calcula o desconto dado ao cliente.
+     * @return Retorna valor entre 0 a 1.
+     * Onde 0 significa 100% de desconto e 1 significa 0% de desconto.
+     * Exemplo: O cliente tem 20% desconto, sendo assim o valor retornado será 0,8.
+     */
+    public abstract int calculaDesconto();
+
+    /**
+     * Verifica se o cliente é do tipo que paga mensalidade.
+     * @return true se o cliente paga mensalidade.
+     */
+    public abstract boolean pagaMensalidade();
+
+    /**
+     * Calcula a mensalidade do cliente.
+     * @return Retorna o valor da mensalidade.
+     */
+    public abstract int calculaMensalidade();
+
     //#endregion
 }
