@@ -1,5 +1,7 @@
 package entities;
 
+import entities.jogo.Jogo;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +9,21 @@ import java.util.List;
 public class Compra implements Serializable {
 
     static final long serialVersionUID = 2;
+
+    //#region Atributos
     private double valorPago;
     private List<Jogo> jogos;
+    //#endregion
 
+    //#region Construtor
+
+    //#endregion
+
+    //#region Get e Set
+
+    //#endregion
+
+    //#region Métodos Específicos
     public Compra(double v){
         valorPago = v;
     };
@@ -27,4 +41,5 @@ public class Compra implements Serializable {
         }
         return sb.toString();
     }
+    //endregion
 }
