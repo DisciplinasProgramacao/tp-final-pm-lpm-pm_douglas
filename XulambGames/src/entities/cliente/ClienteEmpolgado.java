@@ -1,6 +1,6 @@
 package entities.cliente;
 
-public class Empolgado extends Cliente {
+public class ClienteEmpolgado extends Cliente {
     /**
      * Construtor.
      * Não é permitido parâmetro null ou menor que 5 dígitos.
@@ -9,7 +9,7 @@ public class Empolgado extends Cliente {
      * @param nomeUsuario Nome de usuário.
      * @param senha       Senha do cliente.
      */
-    public Empolgado(String nome, String nomeUsuario, String senha) {
+    public ClienteEmpolgado(String nome, String nomeUsuario, String senha) {
         super(nome, nomeUsuario, senha);
     }
 
