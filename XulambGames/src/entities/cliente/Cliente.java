@@ -1,5 +1,6 @@
-package entities;
+package entities.cliente;
 
+import entities.Compra;
 import util.XulambException;
 
 import java.io.Serializable;
@@ -29,11 +30,11 @@ public abstract class Cliente implements Serializable {
      */
     public Cliente(String nome, String nomeUsuario, String senha) {
         if (validaStringNullOuMenorQue5(nome))
-            throw new XulambException("Erro ao criar cliente: nome nulo ou menor que 5 dígitos");
+            throw new XulambException("Erro ao criar cliente: nome é null ou menor que 5 dígitos");
         if (validaStringNullOuMenorQue5(nomeUsuario))
-            throw new XulambException("Erro ao criar cliente: nomeUsuario nulo ou menor que 5 dígitos");
+            throw new XulambException("Erro ao criar cliente: nomeUsuario é null ou menor que 5 dígitos");
         if (validaStringNullOuMenorQue5(senha))
-            throw new XulambException("Erro ao criar cliente: senha nula ou menor que 5 dígitos");
+            throw new XulambException("Erro ao criar cliente: senha é null ou menor que 5 dígitos");
 
         this.nome = nome;
         this.nomeUsuario = nomeUsuario;
@@ -170,7 +171,7 @@ public abstract class Cliente implements Serializable {
      * Onde 0 significa 100% de desconto e 1 significa 0% de desconto.
      * Exemplo: O cliente tem 20% desconto, sendo assim o valor retornado será 0,8.
      */
-    public abstract int calculaDesconto();
+    public abstract double calculaDesconto();
 
     /**
      * Verifica se o cliente é do tipo que paga mensalidade.
@@ -182,7 +183,7 @@ public abstract class Cliente implements Serializable {
      * Calcula a mensalidade do cliente.
      * @return Retorna o valor da mensalidade.
      */
-    public abstract int calculaMensalidade();
+    public abstract double calculaMensalidade();
 
     //#endregion
 }

@@ -1,6 +1,7 @@
-package entities;
+package entities.cliente;
 
-public class Fanaticos extends Cliente{
+
+public class Fanatico extends Cliente {
     /**
      * Construtor.
      * Não é permitido parâmetro null ou menor que 5 dígitos.
@@ -9,13 +10,13 @@ public class Fanaticos extends Cliente{
      * @param nomeUsuario Nome de usuário.
      * @param senha       Senha do cliente.
      */
-    public Fanaticos(String nome, String nomeUsuario, String senha) {
+    public Fanatico(String nome, String nomeUsuario, String senha) {
         super(nome, nomeUsuario, senha);
     }
 
     @Override
-    public int calculaDesconto() {
-        return 0;
+    public double calculaDesconto() {
+        return 0.7;
     }
 
     @Override
@@ -24,7 +25,7 @@ public class Fanaticos extends Cliente{
     }
 
     @Override
-    public int calculaMensalidade() {
-        return 0;
+    public double calculaMensalidade() {
+        return 25.0;
     }
 }

@@ -1,6 +1,6 @@
-package entities;
+package entities.cliente;
 
-public class Empolgados extends Cliente{
+public class Cadastrado extends Cliente {
     /**
      * Construtor.
      * Não é permitido parâmetro null ou menor que 5 dígitos.
@@ -9,22 +9,22 @@ public class Empolgados extends Cliente{
      * @param nomeUsuario Nome de usuário.
      * @param senha       Senha do cliente.
      */
-    public Empolgados(String nome, String nomeUsuario, String senha) {
+    public Cadastrado(String nome, String nomeUsuario, String senha) {
         super(nome, nomeUsuario, senha);
     }
 
     @Override
-    public int calculaDesconto() {
-        return 0;
+    public double calculaDesconto() {
+        return 1.0;
     }
 
     @Override
     public boolean pagaMensalidade() {
-        return true;
+        return false;
     }
 
     @Override
-    public int calculaMensalidade() {
-        return 0;
+    public double calculaMensalidade() {
+        return 0.0;
     }
 }
