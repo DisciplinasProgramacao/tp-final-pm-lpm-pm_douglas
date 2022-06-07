@@ -16,6 +16,8 @@ public abstract class Cliente implements Serializable {
     protected String nomeUsuario;
     protected String senha;
     protected List<Compra> comprasHistorico = new ArrayList<>();
+
+    private TipoCliente tipo;
     //#endregion
 
     //#region Construtor
@@ -28,7 +30,7 @@ public abstract class Cliente implements Serializable {
      * @throws XulambException devido os parâmetros forem nulos ou menor que 5 dígitos.
      *
      */
-    public Cliente(String nome, String nomeUsuario, String senha) {
+    public Cliente(String nome, String nomeUsuario, String senha, TipoCliente tipo) {
         if (validaStringNullOuMenorQue5(nome))
             throw new XulambException("Erro ao criar cliente: nome é null ou menor que 5 dígitos");
         if (validaStringNullOuMenorQue5(nomeUsuario))
@@ -39,6 +41,7 @@ public abstract class Cliente implements Serializable {
         this.nome = nome;
         this.nomeUsuario = nomeUsuario;
         this.senha = senha;
+        this.tipo = tipo;
     }
     //#endregion
 
@@ -147,8 +150,6 @@ public abstract class Cliente implements Serializable {
         sb.append("\t");
         sb.append(nomeUsuario);
         sb.append("\t");
-        sb.append(senha);
-        sb.append('\n');
         sb.append(historicoCompleto());
         return sb.toString();
     }
@@ -162,28 +163,10 @@ public abstract class Cliente implements Serializable {
             return true;
         return false;
     }
+
+    public double precoAPagar() {
+        return tipo.calculaDesconto();
+    }
     //#endregion
 
-    //#region Métodos Abstract
-    /**
-     * Calcula o desconto dado ao cliente.
-     * @return Retorna valor entre 0 a 1.
-     * Onde 0 significa 100% de desconto e 1 significa 0% de desconto.
-     * Exemplo: O cliente tem 20% desconto, sendo assim o valor retornado será 0,8.
-     */
-    public abstract double calculaDesconto();
-
-    /**
-     * Verifica se o cliente é do tipo que paga mensalidade.
-     * @return true se o cliente paga mensalidade.
-     */
-    public abstract boolean pagaMensalidade();
-
-    /**
-     * Calcula a mensalidade do cliente.
-     * @return Retorna o valor da mensalidade.
-     */
-    public abstract double calculaMensalidade();
-
-    //#endregion
 }
