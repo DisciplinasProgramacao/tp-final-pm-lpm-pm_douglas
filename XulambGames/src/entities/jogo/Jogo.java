@@ -10,6 +10,7 @@ public class Jogo implements Serializable {
 
     //#region Atributos
     private String nome;
+    private double precoOriginal;
     private Categoria categoria;
     //#endregion
 
@@ -47,6 +48,23 @@ public class Jogo implements Serializable {
         this.categoria = categoria;
     }
 
+    public double getPreco() {
+        return calcularPreco();
+    }
+
+    // Verificar condições de Preço Original !!!!
+    private double calcularPreco() {
+        double preco = precoOriginal;
+        switch (this.getCategoria()) {
+            case LANCAMENTO -> preco *= 1.1;
+            case REGULAR -> preco *= 0.7;
+            case PROMOCAO -> preco *= 0.3;
+            case PREMIUM, default -> {
+            }
+        };
+        return preco;
+    }
+
 
     //#endregion
 
@@ -60,6 +78,7 @@ public class Jogo implements Serializable {
             return true;
         return false;
     }
+
     //#endregion
 
 }

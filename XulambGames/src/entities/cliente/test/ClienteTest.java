@@ -1,9 +1,9 @@
 package entities.cliente.test;
 
-import entities.cliente.Cadastrado;
+import entities.cliente.ClienteCadastrado;
 import entities.cliente.Cliente;
-import entities.cliente.Empolgado;
-import entities.cliente.Fanatico;
+import entities.cliente.ClienteEmpolgado;
+import entities.cliente.ClienteFanatico;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -14,9 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ClienteTest {
     @Test
     void criaTest() {
-        Cliente clienteC = new Cadastrado("Cadastrado", "Cadastrado", "12345");
-        Cliente clienteE = new Empolgado("Empolgado", "Empolgado", "12345");
-        Cliente clienteF = new Fanatico("Fanatico", "Fanatico", "12345");
+        Cliente clienteC = new ClienteCadastrado("Cadastrado", "Cadastrado", "12345");
+        Cliente clienteE = new ClienteEmpolgado("Empolgado", "Empolgado", "12345");
+        Cliente clienteF = new ClienteFanatico("Fanatico", "Fanatico", "12345");
 
         List<Cliente> clientes = new ArrayList<>();
 
