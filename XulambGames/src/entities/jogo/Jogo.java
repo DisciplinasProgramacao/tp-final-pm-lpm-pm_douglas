@@ -11,11 +11,12 @@ public class Jogo implements Serializable {
     //#region Atributos
     private String nome;
     private double precoOriginal;
-    private Categoria categoria;
+    private double precoAtual;
+    private CategoriaJogo categoria;
     //#endregion
 
     //#region Construtor
-    public Jogo(String nome, Categoria categoria) {
+    public Jogo(String nome, CategoriaJogo categoria, double precoOriginal, double precoAtual) {
         if (validaStringNullOuMenorQue1(nome))
             throw new XulambException("Erro ao criar jogo: nome é null ou menor que 1 dígito");
         if (categoria == null)
@@ -23,6 +24,8 @@ public class Jogo implements Serializable {
 
         this.nome = nome;
         this.categoria = categoria;
+        this.precoOriginal = precoOriginal;
+        setPreco(precoAtual);
     }
     //#endregion
 
@@ -38,32 +41,29 @@ public class Jogo implements Serializable {
         this.nome = nome;
     }
 
-    public Categoria getCategoria() {
+    public CategoriaJogo getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(Categoria categoria) {
+    public void setCategoria(CategoriaJogo categoria) {
         if (categoria == null)
             throw new XulambException("Erro ao criar jogo: categoria é null");
         this.categoria = categoria;
     }
 
-    public double getPreco() {
-        return calcularPreco();
+    public void setPreco(double novoPreco) {
+        double pct = novoPreco/precoOriginal;
+        if (pct > categoria.maiorPreco() || pct < categoria.menorPreco()) {
+            throw new XulambException("PrecoInvalido");
+        }
+        else {
+            precoAtual = novoPreco;
+        }      
     }
 
-    // Verificar condições de Preço Original !!!!
-    private double calcularPreco() {
-        double preco = precoOriginal;
-        switch (this.getCategoria()) {
-            case LANCAMENTO -> preco *= 1.1;
-            case REGULAR -> preco *= 0.7;
-            case PROMOCAO -> preco *= 0.3;
-            case PREMIUM, default -> {
-            }
-        };
-        return preco;
-    }
+    public double getPreco() {
+        return precoAtual;
+    }  
 
 
     //#endregion
