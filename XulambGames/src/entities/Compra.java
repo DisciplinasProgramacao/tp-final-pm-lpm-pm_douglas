@@ -51,8 +51,53 @@ public class Compra implements Serializable {
 
     //#region Métodos Específicos
 
-    public void calcularValorFinal() {
+    public double calcularValorFinal() {
+        double valor = calcularValorSemDesconto();
 
+        // aplicar desconto da compra
+        valor = calcularValorAposDesconto(valor);
+
+        // aplicar desconto do cliente
+        valor = calcularValorAposDescontoCliente(valor);
+
+        return valor;
+    }
+
+//    public double calcularValorFinal() {
+//        double valorInicial = calcularValorSemDesconto();
+//
+//        // aplicar desconto da compra
+//        valor = calcularValorAposDesconto(valor);
+//        // Desconto precisa ser a porcentagem de desconto, e não a porcentagem do valor final da compra
+//        // Exemplo: Desconto de 30%, os métodos estão retornando 0.7,
+//
+//        // aplicar desconto do cliente
+//        valor = calcularValorAposDescontoCliente(valor);
+//
+//        return valor;
+//    }
+
+    private double calcularValorAposDescontoCliente(double valor) {
+        return valor * cliente.calculaDesconto();
+    }
+
+    //#region Calcular Preço Total Sem Desconto
+    private double calcularValorSemDesconto() {
+        return getJogos().stream()
+                .mapToDouble(Jogo::getPreco)
+                .sum();
+    }
+
+    //#endregion
+
+    //#region Cálculo de desconto da Compra
+    private double calcularValorAposDesconto(double valor) {
+        if(temDesconto20())
+            return valor * 0.8;
+        if(temDesconto20())
+            return valor * 0.9;
+        else
+            return valor;
     }
 
     private int getQtdJogosPorCategoria(Categoria c) {
@@ -99,6 +144,7 @@ public class Compra implements Serializable {
     private boolean desconto4Regulares() {
         return getQtdJogosPorCategoria(Categoria.REGULAR) == 4;
     }
+    //#endregion
     //#endregion
 
     public String toString() {
