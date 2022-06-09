@@ -1,7 +1,7 @@
 package entities;
 
 import entities.cliente.Cliente;
-import entities.jogo.Categoria;
+import entities.jogo.CategoriaJogo;
 import entities.jogo.Jogo;
 
 import java.io.Serializable;
@@ -94,13 +94,13 @@ public class Compra implements Serializable {
     private double calcularValorAposDesconto(double valor) {
         if(temDesconto20())
             return valor * 0.8;
-        if(temDesconto20())
+        if(temDesconto10())
             return valor * 0.9;
         else
             return valor;
     }
 
-    private int getQtdJogosPorCategoria(Categoria c) {
+    private int getQtdJogosPorCategoria(CategoriaJogo c) {
         return (int)jogos.stream().filter(n -> n.getCategoria() == c).count();
     }
 
@@ -115,34 +115,34 @@ public class Compra implements Serializable {
 
     //#region Condições para desconto de 20%
     private boolean desconto2Lancamentos() {
-        return (getQtdJogosPorCategoria(Categoria.LANCAMENTO) >= 2);
+        return (getQtdJogosPorCategoria(CategoriaJogo.LANCAMENTO) >= 2);
     }
 
     private boolean desconto2PremiumMais1() {
-        return (getQtdJogosPorCategoria(Categoria.PREMIUM) >= 2) && getQtdJogos() >= 3;
+        return (getQtdJogosPorCategoria(CategoriaJogo.PREMIUM) >= 2) && getQtdJogos() >= 3;
     }
 
     private boolean desconto3Premium() {
-        return getQtdJogosPorCategoria(Categoria.PREMIUM) >= 3;
+        return getQtdJogosPorCategoria(CategoriaJogo.PREMIUM) >= 3;
     }
 
     private boolean desconto3RegularesMais1() {
-        int qtdRegulares = getQtdJogosPorCategoria(Categoria.REGULAR);
+        int qtdRegulares = getQtdJogosPorCategoria(CategoriaJogo.REGULAR);
         return (qtdRegulares >= 3 && qtdRegulares < 5) && (getQtdJogos() > qtdRegulares);
     }
 
     private boolean desconto5Regulares() {
-        return getQtdJogosPorCategoria(Categoria.REGULAR) >= 5;
+        return getQtdJogosPorCategoria(CategoriaJogo.REGULAR) >= 5;
     }
     //#endregion
 
     //#region Condições para desconto de 10%
     private boolean desconto2Premium() {
-        return getQtdJogosPorCategoria(Categoria.PREMIUM) == 2;
+        return getQtdJogosPorCategoria(CategoriaJogo.PREMIUM) == 2;
     }
 
     private boolean desconto4Regulares() {
-        return getQtdJogosPorCategoria(Categoria.REGULAR) == 4;
+        return getQtdJogosPorCategoria(CategoriaJogo.REGULAR) == 4;
     }
     //#endregion
     //#endregion
