@@ -1,7 +1,7 @@
 package entities.cliente;
 
 import entities.Compra;
-import util.XulambException;
+import util.CadastroClienteException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,16 +27,16 @@ public abstract class Cliente implements Serializable {
      * @param nome Nome do cliente.
      * @param nomeUsuario Nome de usuário.
      * @param senha Senha do cliente.
-     * @throws XulambException devido os parâmetros forem nulos ou menor que 5 dígitos.
+     * @throws CadastroClienteException devido os parâmetros forem nulos ou menor que 5 dígitos.
      *
      */
     public Cliente(String nome, String nomeUsuario, String senha, TipoCliente tipo) {
         if (validaStringNullOuMenorQue5(nome))
-            throw new XulambException("Erro ao criar cliente: nome é null ou menor que 5 dígitos");
+            throw new CadastroClienteException("Erro ao criar cliente: nome é null ou menor que 5 dígitos");
         if (validaStringNullOuMenorQue5(nomeUsuario))
-            throw new XulambException("Erro ao criar cliente: nomeUsuario é null ou menor que 5 dígitos");
+            throw new CadastroClienteException("Erro ao criar cliente: nomeUsuario é null ou menor que 5 dígitos");
         if (validaStringNullOuMenorQue5(senha))
-            throw new XulambException("Erro ao criar cliente: senha é null ou menor que 5 dígitos");
+            throw new CadastroClienteException("Erro ao criar cliente: senha é null ou menor que 5 dígitos");
 
         this.nome = nome;
         this.nomeUsuario = nomeUsuario;
@@ -59,9 +59,9 @@ public abstract class Cliente implements Serializable {
      */
     public void setNome(String novoNome, String senha) {
         if(!verificaSenha(senha))
-            throw new XulambException("Erro na alteração do nome: senha incorreta");
+            throw new CadastroClienteException("Erro na alteração do nome: senha incorreta");
         if (validaStringNullOuMenorQue5(novoNome))
-            throw new XulambException("Erro na alteração do nome: novo nome nulo ou menor que 5 dígitos");
+            throw new CadastroClienteException("Erro na alteração do nome: novo nome nulo ou menor que 5 dígitos");
         this.nome = novoNome;
     }
 
@@ -78,9 +78,9 @@ public abstract class Cliente implements Serializable {
      */
     public void setNomeUsuario(String novoNomeUsuario, String senha) {
         if(!verificaSenha(senha))
-            throw new XulambException("Erro na alteração do nome de usuário: senha incorreta");
+            throw new CadastroClienteException("Erro na alteração do nome de usuário: senha incorreta");
         if (validaStringNullOuMenorQue5(novoNomeUsuario))
-            throw new XulambException("Erro na alteração do nome de usuário: novo nome de usuário nulo ou menor que 5 dígitos");
+            throw new CadastroClienteException("Erro na alteração do nome de usuário: novo nome de usuário nulo ou menor que 5 dígitos");
         this.nomeUsuario = novoNomeUsuario;
     }
 
@@ -93,10 +93,10 @@ public abstract class Cliente implements Serializable {
      */
     public void setSenha(String senhaNova, String senha) {
         if(!verificaSenha(senha)) {
-            throw new XulambException("Erro na alteração de senha: senha incorreta");
+            throw new CadastroClienteException("Erro na alteração de senha: senha incorreta");
         }
         if (validaStringNullOuMenorQue5(senhaNova)) {
-            throw new XulambException("Erro na alteração de senha: nova senha nula ou menor que 5 dígitos");
+            throw new CadastroClienteException("Erro na alteração de senha: nova senha nula ou menor que 5 dígitos");
         }
         this.senha = senhaNova;
     }
@@ -114,7 +114,7 @@ public abstract class Cliente implements Serializable {
      */
     public void addCompraAoHistorico(Compra compra) {
         if(compra == null)
-            throw new XulambException("Erro ao adicionar compra ao histórico do cliente: compra é null!");
+            throw new CadastroClienteException("Erro ao adicionar compra ao histórico do cliente: compra é null!");
         comprasHistorico.add(compra);
     }
 
@@ -164,7 +164,7 @@ public abstract class Cliente implements Serializable {
         return false;
     }
 
-    public double precoAPagar() {
+    public double calculaDesconto() {
         return tipo.calculaDesconto();
     }
     //#endregion
