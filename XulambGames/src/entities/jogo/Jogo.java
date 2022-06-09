@@ -1,6 +1,6 @@
 package entities.jogo;
 
-import util.XulambException;
+import util.CadastroJogoException;
 
 import java.io.Serializable;
 
@@ -18,9 +18,9 @@ public class Jogo implements Serializable {
     //#region Construtor
     public Jogo(String nome, CategoriaJogo categoria, double precoOriginal, double precoAtual) {
         if (validaStringNullOuMenorQue1(nome))
-            throw new XulambException("Erro ao criar jogo: nome é null ou menor que 1 dígito");
+            throw new CadastroJogoException("Erro ao criar jogo: nome é null ou menor que 1 dígito");
         if (categoria == null)
-            throw new XulambException("Erro ao criar jogo: categoria é null");
+            throw new CadastroJogoException("Erro ao criar jogo: categoria é null");
 
         this.nome = nome;
         this.categoria = categoria;
@@ -37,7 +37,7 @@ public class Jogo implements Serializable {
 
     public void setNome(String nome) {
         if (validaStringNullOuMenorQue1(nome))
-            throw new XulambException("Erro ao criar jogo: nome é null ou menor que 1 dígito");
+            throw new CadastroJogoException("Erro ao criar jogo: nome é null ou menor que 1 dígito");
         this.nome = nome;
     }
 
@@ -47,14 +47,14 @@ public class Jogo implements Serializable {
 
     public void setCategoria(CategoriaJogo categoria) {
         if (categoria == null)
-            throw new XulambException("Erro ao criar jogo: categoria é null");
+            throw new CadastroJogoException("Erro ao criar jogo: categoria é null");
         this.categoria = categoria;
     }
 
     public void setPreco(double novoPreco) {
         double pct = novoPreco/precoOriginal;
         if (pct > categoria.maiorPreco() || pct < categoria.menorPreco()) {
-            throw new XulambException("PrecoInvalido");
+            throw new CadastroJogoException("PrecoInvalido");
         }
         else {
             precoAtual = novoPreco;
