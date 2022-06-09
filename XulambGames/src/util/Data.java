@@ -12,7 +12,7 @@ import java.util.Objects;
  *  Imprimir a data no formato DD/MM/AAAA.
  */
 
-public class MinhaData implements Comparable, Serializable {
+public class Data implements Comparable, Serializable {
 
     //#region CONSTANTES
     //constante: dias de cada mês
@@ -30,7 +30,7 @@ public class MinhaData implements Comparable, Serializable {
     /**
      * Construtor para data padrão: 01/01/1990
      */
-    public MinhaData(){
+    public Data(){
         this.init(1,1,1990);
     }
 
@@ -41,7 +41,7 @@ public class MinhaData implements Comparable, Serializable {
      * @param mes Mês
      *
      */
-    public MinhaData(int dia, int mes){
+    public Data(int dia, int mes){
         this.init(dia, mes, ANO_ATUAL);
     }
 
@@ -51,7 +51,7 @@ public class MinhaData implements Comparable, Serializable {
      * @param mes Mês
      * @param ano Ano
      */
-    public MinhaData(int dia, int mes, int ano){
+    public Data(int dia, int mes, int ano){
         this.init(dia, mes, ano);
     }
 
@@ -60,8 +60,7 @@ public class MinhaData implements Comparable, Serializable {
         this.mes = mes;
         this.ano = ano;
         if (!this.dataValida()){     //se a data não é válida... (método da própria classe)
-            this.dia = this.mes = 1;
-            this.ano = 1990;
+            throw new DataInvalidaException("A data fornecida é inválida");
         }
     }
     //#endregion
@@ -110,8 +109,8 @@ public class MinhaData implements Comparable, Serializable {
      * @param quant Quantos dias
      * @return Nova data com os dias adicionados
      */
-    public MinhaData acrescentaDias(int quant){
-        MinhaData aux = new MinhaData(this.dia, this.mes, this.ano);
+    public Data acrescentaDias(int quant){
+        Data aux = new Data(this.dia, this.mes, this.ano);
 
         aux.dia += quant;      //acrescenta a quantidade ao dia atual e, em seguida, devemos ajustar mês e ano
 
@@ -138,7 +137,7 @@ public class MinhaData implements Comparable, Serializable {
      * @param outra Outra data a ser comparada
      * @return TRUE se esta for futura, FALSE caso contrário
      */
-    public boolean maisFutura(MinhaData outra){
+    public boolean maisFutura(Data outra){
         boolean resposta = false;
 
         String esta = String.format("%4d", this.ano)+String.format("%2d", this.mes)+String.format("%2d", this.dia);
@@ -170,16 +169,16 @@ public class MinhaData implements Comparable, Serializable {
     public int compareTo(Object o) {
 
         String esta = String.format("%4d", this.ano)+String.format("%2d", this.mes)+String.format("%2d", this.dia);
-        String aOutra = String.format("%4d", ((MinhaData) o).ano)+String.format("%2d", ((MinhaData) o).mes)+String.format("%2d", ((MinhaData) o).dia);
+        String aOutra = String.format("%4d", ((Data) o).ano)+String.format("%2d", ((Data) o).mes)+String.format("%2d", ((Data) o).dia);
         return esta.compareTo(aOutra);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof MinhaData)) return false;
-        MinhaData minhaData = (MinhaData) o;
-        return dia == minhaData.dia && mes == minhaData.mes && ano == minhaData.ano;
+        if (!(o instanceof Data)) return false;
+        Data Data = (Data) o;
+        return dia == Data.dia && mes == Data.mes && ano == Data.ano;
     }
 
     @Override
