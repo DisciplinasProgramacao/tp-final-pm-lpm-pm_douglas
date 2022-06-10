@@ -1,7 +1,9 @@
 package application;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.TreeMap;
@@ -36,17 +38,19 @@ public class Program {
     public static void escreverClientes(TreeMap<String, Cliente> clientes, String nomeArq) {
 
         try {
-
             FileOutputStream fout = new FileOutputStream(nomeArq);
             ObjectOutputStream arqSaida = new ObjectOutputStream(fout);
             arqSaida.writeObject(clientes);
             arqSaida.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (FileNotFoundException e) {
+            System.out.println("Erro na escrita de dados: arquivo não encontrado");
+        } catch (IOException e) {
+            System.out.println("Erro na escrita de dados: " + e);
         }
     }
 
-    public static void lerClientes(String nomeArq) {
+    public static TreeMap<String, Cliente> lerClientes(String nomeArq) {
+        TreeMap<String, Cliente> clientes = new TreeMap<>();
         FileInputStream arq;
         try {
             arq = new FileInputStream(nomeArq);
@@ -54,16 +58,22 @@ public class Program {
             ObjectInputStream arqLeitura;
             arqLeitura = new ObjectInputStream(arq);
 
-            TreeMap<String, Cliente> clientes = (TreeMap<String, Cliente>) arqLeitura.readObject();
+            clientes = (TreeMap<String, Cliente>) arqLeitura.readObject();
 
             for (Cliente c : clientes.values()) {
                 System.out.println(c);
             }
 
             arqLeitura.close();
-        } catch (Exception e) {
 
-            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            System.out.println("Erro na leitura de dados: arquivo não encontrado");
+        } catch (IOException e) {
+            System.out.println("Erro na leitura de dados: " + e);
+        } catch (ClassNotFoundException e) {
+            System.out.println("Erro na leitura de dados: Os dados não estão no formato correto");
         }
+
+        return clientes;
     }
 }
