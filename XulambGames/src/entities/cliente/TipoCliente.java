@@ -9,7 +9,8 @@ public enum TipoCliente implements ITipoCliente {
     private double desconto;
 
     private TipoCliente(double mensalidade, double desconto){
-
+        this.mensalidade = mensalidade;
+        this.desconto = desconto;
     }
 
     /**

@@ -5,8 +5,9 @@ import entities.jogo.CategoriaJogo;
 import entities.jogo.Jogo;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+
+import util.Data;
 
 public class Compra implements Serializable {
 
@@ -16,17 +17,16 @@ public class Compra implements Serializable {
     private Cliente cliente;
     private double valorPago;
     private List<Jogo> jogos;
+    private double descontoCliente;
+    private Data data;
     //#endregion
 
     //#region Construtor
-    public Compra(double v){
-        valorPago = v;
-    }
-
-    public Compra(double v, ArrayList<Jogo> j, Cliente c){
-        valorPago = v;
+    public Compra(List<Jogo> j, double dC, Data d){
         jogos = j;
-        cliente = c;
+        descontoCliente = dC;
+        data = d;
+        valorPago = calcularValorFinal();
     }
     //#endregion
 
@@ -51,7 +51,7 @@ public class Compra implements Serializable {
 
     //#region Métodos Específicos
 
-    public double calcularValorFinal() {
+    private double calcularValorFinal() {
         double valor = calcularValorSemDesconto();
 
         // aplicar desconto da compra
@@ -78,7 +78,7 @@ public class Compra implements Serializable {
 //    }
 
     private double calcularValorAposDescontoCliente(double valor) {
-        return valor * cliente.calculaDesconto();
+        return valor * descontoCliente;
     }
 
     //#region Calcular Preço Total Sem Desconto
