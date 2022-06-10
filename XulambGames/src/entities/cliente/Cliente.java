@@ -1,13 +1,15 @@
 package entities.cliente;
 
 import entities.Compra;
+import entities.jogo.Jogo;
 import util.CadastroClienteException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import util.Data;
 
-public abstract class Cliente implements Serializable {
+public class Cliente implements Serializable {
 
     static final long serialVersionUID = 1;
 
@@ -108,13 +110,12 @@ public abstract class Cliente implements Serializable {
 
     //#region Métodos Específicos
     /**
-     * Adiciona compra ao Histórico do cliente.
-     * Não é permitido parâmetro null.
-     * @param compra Compra a ser adicionada.
+     * Cria compra e adiciona ao Histórico do cliente.
+     * @param j lista de jogos comprados
+     * @param data data da compra
      */
-    public void addCompraAoHistorico(Compra compra) {
-        if(compra == null)
-            throw new CadastroClienteException("Erro ao adicionar compra ao histórico do cliente: compra é null!");
+    public void comprar(ArrayList<Jogo> j, Data data) {
+        Compra compra = new Compra(j, calculaDesconto(), data);
         comprasHistorico.add(compra);
     }
 
