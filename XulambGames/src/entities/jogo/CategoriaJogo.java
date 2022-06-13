@@ -10,10 +10,10 @@ public enum CategoriaJogo {
     private double multiplicadorMin;
     private String nome;
 
-    private CategoriaJogo(double multMin, double multMax, String n){
-        multiplicadorMax = multMax;
-        multiplicadorMin = multMin;
-        nome = n;
+    private CategoriaJogo(double multMin, double multMax, String nome){
+        this.multiplicadorMax = multMax;
+        this.multiplicadorMin = multMin;
+        this.nome = nome;
     }
 
     public double maiorPreco(){

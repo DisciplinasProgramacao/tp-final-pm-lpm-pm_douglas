@@ -1,7 +1,9 @@
 package application;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -57,13 +59,14 @@ public class Program {
     public static void escreverClientes(TreeMap<String, Cliente> clientes, String nomeArq) {
 
         try {
-
             FileOutputStream fout = new FileOutputStream(nomeArq);
             ObjectOutputStream arqSaida = new ObjectOutputStream(fout);
             arqSaida.writeObject(clientes);
             arqSaida.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (FileNotFoundException e) {
+            System.out.println("Erro na escrita de dados: arquivo não encontrado");
+        } catch (IOException e) {
+            System.out.println("Erro na escrita de dados: " + e);
         }
     }
 
@@ -80,9 +83,13 @@ public class Program {
             clientes = (TreeMap<String, Cliente>) arqLeitura.readObject();
 
             arqLeitura.close();
-        } catch (Exception e) {
 
-            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            System.out.println("Erro na leitura de dados: arquivo não encontrado");
+        } catch (IOException e) {
+            System.out.println("Erro na leitura de dados: " + e);
+        } catch (ClassNotFoundException e) {
+            System.out.println("Erro na leitura de dados: Os dados não estão no formato correto");
         }
 
         return clientes;
