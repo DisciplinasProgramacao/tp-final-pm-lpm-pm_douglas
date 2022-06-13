@@ -131,7 +131,6 @@ public class Compra implements Serializable {
         return getQtdJogosPorCategoria(CategoriaJogo.REGULAR) == 4;
     }
     //#endregion
-    //#endregion
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -141,5 +140,5 @@ public class Compra implements Serializable {
         }
         return sb.toString();
     }
-    //endregion
+    //#endregion
 }

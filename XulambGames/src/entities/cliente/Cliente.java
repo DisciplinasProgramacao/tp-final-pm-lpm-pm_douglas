@@ -115,7 +115,7 @@ public class Cliente implements Serializable {
      * @param data data da compra
      */
     public void comprar(ArrayList<Jogo> j, Data data) {
-        Compra compra = new Compra(j, calculaDesconto(), data);
+        Compra compra = new Compra(j, valorAPagar(), data);
         comprasHistorico.add(compra);
     }
 
@@ -165,8 +165,13 @@ public class Cliente implements Serializable {
         return false;
     }
 
-    public double calculaDesconto() {
-        return tipo.calculaDesconto();
+    /**
+     * Calcula a porcentagem do preço final que o cliente deve pagar baseado em seu tipo.
+     * @return Retorna valor a pagar entre 0 a 1.
+     * Exemplo: O cliente tem 20% desconto, sendo assim o valor retornado será 0,8.
+     */
+    public double valorAPagar() {
+        return tipo.valorAPagar();
     }
     //#endregion
 
