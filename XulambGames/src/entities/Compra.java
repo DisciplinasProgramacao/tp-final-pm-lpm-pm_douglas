@@ -54,28 +54,14 @@ public class Compra implements Serializable {
     private double calcularValorFinal() {
         double valor = calcularValorSemDesconto();
 
-        // aplicar desconto da compra
-        valor = calcularValorAposDesconto(valor);
+        // aplicar desconto dos jogos da compra
+        valor = calcularValorAposDescontoJogos(valor);
 
         // aplicar desconto do cliente
         valor = calcularValorAposDescontoCliente(valor);
 
         return valor;
     }
-
-//    public double calcularValorFinal() {
-//        double valorInicial = calcularValorSemDesconto();
-//
-//        // aplicar desconto da compra
-//        valor = calcularValorAposDesconto(valor);
-//        // Desconto precisa ser a porcentagem de desconto, e não a porcentagem do valor final da compra
-//        // Exemplo: Desconto de 30%, os métodos estão retornando 0.7,
-//
-//        // aplicar desconto do cliente
-//        valor = calcularValorAposDescontoCliente(valor);
-//
-//        return valor;
-//    }
 
     private double calcularValorAposDescontoCliente(double valor) {
         return valor * descontoCliente;
@@ -90,8 +76,8 @@ public class Compra implements Serializable {
 
     //#endregion
 
-    //#region Cálculo de desconto da Compra
-    private double calcularValorAposDesconto(double valor) {
+    //#region Cálculo de desconto dos Jogos da Compra
+    private double calcularValorAposDescontoJogos(double valor) {
         if(temDesconto20())
             return valor * 0.8;
         if(temDesconto10())
