@@ -63,20 +63,6 @@ public class Compra implements Serializable {
         return valor;
     }
 
-//    public double calcularValorFinal() {
-//        double valorInicial = calcularValorSemDesconto();
-//
-//        // aplicar desconto da compra
-//        valor = calcularValorAposDesconto(valor);
-//        // Desconto precisa ser a porcentagem de desconto, e não a porcentagem do valor final da compra
-//        // Exemplo: Desconto de 30%, os métodos estão retornando 0.7,
-//
-//        // aplicar desconto do cliente
-//        valor = calcularValorAposDescontoCliente(valor);
-//
-//        return valor;
-//    }
-
     private double calcularValorAposDescontoCliente(double valor) {
         return valor * descontoCliente;
     }
@@ -145,7 +131,6 @@ public class Compra implements Serializable {
         return getQtdJogosPorCategoria(CategoriaJogo.REGULAR) == 4;
     }
     //#endregion
-    //#endregion
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -155,5 +140,5 @@ public class Compra implements Serializable {
         }
         return sb.toString();
     }
-    //endregion
+    //#endregion
 }
