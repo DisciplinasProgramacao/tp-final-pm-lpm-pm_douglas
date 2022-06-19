@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.TreeMap;
 
 import entities.Compra;
@@ -16,9 +18,13 @@ import entities.jogo.CategoriaJogo;
 import entities.jogo.Jogo;
 import util.Data;
 
-public class Program {
+public class Sistema {
 
     public static final String ARQ_DADOS = "clientes.bin";
+
+    private static List<Jogo> jogos = new ArrayList<>();
+    private static List<Cliente> clientes = new ArrayList<>();
+    private static List<Compra> compras = new ArrayList<>();
 
     public static void main(String[] args) {
 
@@ -42,6 +48,7 @@ public class Program {
        lerClientes(ARQ_DADOS);
     }
 
+    //#region Leitura de Clientes
     public static void escreverClientes(TreeMap<String, Cliente> clientes, String nomeArq) {
 
         try {
@@ -83,4 +90,32 @@ public class Program {
 
         return clientes;
     }
+    //#endregion
+
+    //#region Consultas XulambGames
+    public static double valorMensalVendido(int mesProcurado) {
+        return compras.stream()
+                .filter(c -> c.getData().getMes() == mesProcurado)
+                .mapToDouble(Compra::getValorPago)
+                .sum();
+    }
+
+    public static double valorMedioCompras() {
+        return compras.stream()
+                .mapToDouble(Compra::getValorPago)
+                .sum();
+    }
+
+    public static Jogo jogoMaisVendido() {
+        return jogos.stream()
+                .max(Comparator.comparingInt(Jogo::getQtdVendas))
+                .orElse(null);
+    }
+
+    public static Jogo jogoMenosVendido() {
+        return jogos.stream()
+                .min(Comparator.comparingInt(Jogo::getQtdVendas))
+                .orElse(null);
+    }
+    //#endregion
 }

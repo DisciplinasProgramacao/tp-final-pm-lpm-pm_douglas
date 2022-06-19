@@ -12,6 +12,10 @@ public class Jogo implements Serializable {
     private String nome;
     private double precoOriginal;
     private double precoAtual;
+    private int qtdVendas;
+
+
+
     private CategoriaJogo categoria;
     //#endregion
 
@@ -51,6 +55,10 @@ public class Jogo implements Serializable {
         this.categoria = categoria;
     }
 
+    public int getQtdVendas() {
+        return qtdVendas;
+    }
+
     public void setPreco(double novoPreco) {
         double pct = novoPreco/precoOriginal;
         if (pct > categoria.maiorPreco() || pct < categoria.menorPreco()) {
@@ -63,9 +71,7 @@ public class Jogo implements Serializable {
 
     public double getPreco() {
         return precoAtual;
-    }  
-
-
+    }
     //#endregion
 
     //#region Métodos Específicos
@@ -74,9 +80,11 @@ public class Jogo implements Serializable {
     }
 
     private boolean validaStringNullOuMenorQue1(String s) {
-        if (s == null || s.length() < 1)
-            return true;
-        return false;
+        return s == null || s.length() < 1;
+    }
+
+    public void registrarVenda() {
+        this.qtdVendas++;
     }
 
     //#endregion

@@ -117,6 +117,9 @@ public class Cliente implements Serializable {
     public void comprar(ArrayList<Jogo> j, Data data) {
         Compra compra = new Compra(j, calculaDesconto(), data);
         comprasHistorico.add(compra);
+        for (Jogo jogo : j) {
+            jogo.registrarVenda();
+        }
     }
 
     /*
@@ -135,7 +138,7 @@ public class Cliente implements Serializable {
         if (!comprasHistorico.isEmpty()) {
 
             for (Compra compra : comprasHistorico) {
-                sb.append("\nCompra " + compra.toString());
+                sb.append("\nCompra ").append(compra.toString());
             }
         }
         else {
@@ -156,13 +159,11 @@ public class Cliente implements Serializable {
     }
 
     private boolean verificaSenha(String senha) {
-        return (this.senha == senha) ? true : false;
+        return this.senha == senha;
     }
 
     private boolean validaStringNullOuMenorQue5(String s) {
-        if (s == null || s.length() < 5)
-            return true;
-        return false;
+        return s == null || s.length() < 5;
     }
 
     public double calculaDesconto() {

@@ -39,6 +39,10 @@ public class Compra implements Serializable {
         return valorPago;
     }
 
+    public Data getData() {
+        return data;
+    }
+
     public List<Jogo> getJogos() {
         return jogos;
     }
@@ -67,14 +71,11 @@ public class Compra implements Serializable {
         return valor * descontoCliente;
     }
 
-    //#region Calcular Preço Total Sem Desconto
     private double calcularValorSemDesconto() {
         return getJogos().stream()
                 .mapToDouble(Jogo::getPreco)
                 .sum();
     }
-
-    //#endregion
 
     //#region Cálculo de desconto dos Jogos da Compra
     private double calcularValorAposDescontoJogos(double valor) {

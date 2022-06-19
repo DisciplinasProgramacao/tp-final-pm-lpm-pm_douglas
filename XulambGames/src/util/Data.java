@@ -16,7 +16,7 @@ public class Data implements Comparable, Serializable {
 
     //#region CONSTANTES
     //constante: dias de cada mês
-    private static int[] DIASDOMES = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    private static final int[] DIASDOMES = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
     private static final int ANO_ATUAL = 2022;
     //#endregion
 
@@ -65,6 +65,23 @@ public class Data implements Comparable, Serializable {
     }
     //#endregion
 
+    //#region Getters
+
+    public int getDia() {
+        return dia;
+    }
+
+    public int getMes() {
+        return mes;
+    }
+
+    public int getAno() {
+        return ano;
+    }
+
+
+    //#endregion
+
     //#region Métodos
     /**
      * Retorna se o ano da data armazenada é bissexto
@@ -76,18 +93,16 @@ public class Data implements Comparable, Serializable {
     public boolean anoBissexto(){
         if(this.ano%400==0)
             return true;
-        else if(this.ano%4==0 && this.ano%100!=0)
-            return true;
-        return false;
+        else return this.ano % 4 == 0 && this.ano % 100 != 0;
     }
 
     /**
      * Verifica se a data armazenada é válida (método privado)
      * @return TRUE se é válida ; FALSE se não é válida
      */
-    private Boolean dataValida()
+    private boolean dataValida()
     {
-        Boolean resposta = true;        //resposta sobre a validade
+        boolean resposta = true;        //resposta sobre a validade
         if(this.ano<1900)
             resposta = false;
         else{
@@ -176,8 +191,7 @@ public class Data implements Comparable, Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Data)) return false;
-        Data Data = (Data) o;
+        if (!(o instanceof Data Data)) return false;
         return dia == Data.dia && mes == Data.mes && ano == Data.ano;
     }
 

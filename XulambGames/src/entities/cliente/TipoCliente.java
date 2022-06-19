@@ -8,7 +8,7 @@ public enum TipoCliente implements ITipoCliente {
     private double mensalidade;
     private double desconto;
 
-    private TipoCliente(double mensalidade, double desconto){
+    TipoCliente(double mensalidade, double desconto){
         this.mensalidade = mensalidade;
         this.desconto = desconto;
     }
@@ -18,6 +18,7 @@ public enum TipoCliente implements ITipoCliente {
      * @return Retorna valor a pagar entre 0 a 1.
      * Exemplo: O cliente tem 20% desconto, sendo assim o valor retornado será 0,8.
      */
+    @Override
     public double calculaDesconto(){
         return desconto;
     }
@@ -26,6 +27,7 @@ public enum TipoCliente implements ITipoCliente {
      * Calcula a mensalidade do cliente.
      * @return Retorna o valor da mensalidade.
      */
+    @Override
     public double calculaMensalidade(){
         return mensalidade;
     }
