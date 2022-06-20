@@ -18,8 +18,12 @@ public enum TipoCliente implements ITipoCliente {
      * @return Retorna valor a pagar entre 0 a 1.
      * Exemplo: O cliente tem 20% desconto, sendo assim o valor retornado será 0,8.
      */
-    @Override
     public double calculaDesconto(){
+        return desconto;
+    }
+
+    @Override
+    public double valorAPagar() {
         return desconto;
     }
 
