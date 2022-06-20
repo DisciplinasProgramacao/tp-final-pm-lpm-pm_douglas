@@ -6,11 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
+import java.util.*;
 
 import entities.Compra;
 import entities.cliente.Cliente;
@@ -22,14 +18,151 @@ import util.Data;
 public class Sistema {
 
     public static final String ARQ_DADOS = "clientes.bin";
+    static Scanner teclado = new Scanner(System.in);
+
 
     private static List<Jogo> jogos = new ArrayList<>();
     private static List<Cliente> clientes = new ArrayList<>();
     private static List<Compra> compras = new ArrayList<>();
 
+    //#region Métodos do MENU
+    public static void limparTela(){
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    static void pausa(Scanner teclado){
+        System.out.println("Enter para continuar.");
+        teclado.nextLine();
+    }
+
+    public static int menu(Scanner teclado){
+        limparTela();
+        System.out.println("XULAMBS GAMES");
+        System.out.println("======== OPERAÇÕES =======");
+        System.out.println("1 - Cadastrar Cliente");
+        System.out.println("2 - Registrar Compra");
+        System.out.println("3 - Obter Histórico do Cliente");
+        System.out.println("======== CONSULTAS =======");
+        System.out.println("4 - Valor Mensal Vendido");
+        System.out.println("5 - Valor Médio das Compras");
+        System.out.println("6 - Jogo mais Vendido");
+        System.out.println("7 - Jogo menos Vendido");
+        System.out.println("0 - Sair");
+        int opcao=0;
+        try{
+            opcao = teclado.nextInt();
+            teclado.nextLine();
+        }catch(InputMismatchException ex){
+            teclado.nextLine();
+            System.out.println("Somente opções numéricas.");
+            opcao = -1;
+        }
+        return opcao;
+    }
+
+    private static void menu1CadastroDeCliente() {
+        limparTela();
+        System.out.println("XULAMBS GAMES");
+        System.out.println("======== 1 - Cadastrar Cliente =======");
+        System.out.println("\nDigite o Nome do Cliente");
+        String nome = teclado.nextLine();
+        System.out.println("\nDigite o Nome de Usuário do Cliente");
+        String username = teclado.nextLine();
+        System.out.println("\nDigite a Senha do Usuário");
+        String senha = teclado.nextLine();
+        System.out.println("\nSelecione o tipo do Cliente");
+        System.out.println("\n1 - Cliente CADASTRADO");
+        System.out.println("\n2 - Cliente EMPOLGADO");
+        System.out.println("\n3 - Cliente FANÁTICO");
+        TipoCliente tipoCliente = TipoCliente.CADASTRADO;
+        int nTipoCliente = teclado.nextInt();
+        switch (nTipoCliente) {
+            case 2:
+                tipoCliente = TipoCliente.EMPOLGADO;
+                break;
+            case 3:
+                tipoCliente = TipoCliente.FANATICO;
+                break;
+            case 1:
+            default:
+                break;
+        }
+        clientes.add(new Cliente(nome, username, senha,tipoCliente));
+    }
+
+    private static void menu2RegistrarCompra() {
+        limparTela();
+        System.out.println("XULAMBS GAMES");
+        System.out.println("======== 2 - Registrar Compra =======");
+        System.out.println("\nDigite o nome de usuário do cliente");
+        Cliente cliente = buscarCliente(teclado.nextLine());
+        if(cliente == null) {
+            System.out.println("Cliente não Registrado!");
+            System.out.println("\n Deseja repetir a busca?");
+            System.out.println("1 - SIM");
+            System.out.println("2 - NÃO");
+            int opcao = teclado.nextInt();
+            if(opcao == 1)
+                menu2RegistrarCompra();
+            else
+                menu(teclado);
+        }
+        ArrayList<Jogo> jogosComprados = menu2RegistrarCompra_Jogos();
+    }
+
+    private static ArrayList<Jogo> menu2RegistrarCompra_Jogos() {
+        ArrayList<Jogo> jogosComprados = new ArrayList<>();
+        System.out.println("Digite a quantidade de jogos da compra");
+        int qtdJogos = teclado.nextInt();
+        for (int i = 0; i < qtdJogos; i++) {
+            System.out.println("Digite o nome do Jogo: ");
+            String nomeJogo = teclado.nextLine();
+            Jogo jogoProcurado = buscarJogo(nomeJogo);
+            if(jogoProcurado != null) {
+                jogosComprados.add(jogoProcurado);
+            } else {
+                System.out.println("Jogo não encontrado!");
+                System.out.println("\n Deseja repetir a busca de todos os jogos?");
+                System.out.println("1 - SIM");
+                System.out.println("2 - NÃO");
+                int opcao = teclado.nextInt();
+                if (opcao == 1) {
+                    menu2RegistrarCompra_Jogos();
+                } else {
+                    return null;
+                }
+            }
+        }
+        return jogosComprados;
+    }
+
+    private static void menu3ObterHistoricoDoCliente() {
+
+    }
+
+    private static void menu4ValorMensalVendido() {
+    }
+
+    private static void menu5ValorMedioDasCompras() {
+
+    }
+
+    private static void menu6JogoMaisVendido() {
+
+    }
+
+    private static void menu7JogoMenosVendido() {
+
+    }
+
+
+
+    //#endregion
+
     public static void main(String[] args) {
 
-       TreeMap<String, Cliente> clientes = new TreeMap<>();
+        TreeMap<String, Cliente> clientes = new TreeMap<>();
        ArrayList<Compra> compras = new ArrayList<Compra>();
        ArrayList<Jogo> jogos = new ArrayList<Jogo>();
 
@@ -49,6 +182,35 @@ public class Sistema {
 
         // clientes.put(c.getNomeUsuario(), c);
         // clientes.put(c1.getNomeUsuario(), c1);
+
+        int opcao;
+        do{
+
+            opcao = menu(teclado);
+
+            switch(opcao){
+                case 1:
+                    menu1CadastroDeCliente();
+                    break;
+                case 2:
+                    menu2RegistrarCompra();
+                    break;
+                case 3:
+                    menu3ObterHistoricoDoCliente();
+                    break;
+                case 4:
+                    menu4ValorMensalVendido();
+                case 5:
+                    menu5ValorMedioDasCompras();
+                case 6:
+                    menu6JogoMaisVendido();
+                case 7:
+                    menu7JogoMenosVendido();
+            }
+            pausa(teclado);
+            limparTela();
+        }while(opcao!=0);
+
 
         // testes
         compras = getComprasClientes(clientes);
@@ -112,6 +274,16 @@ public class Sistema {
     //#endregion
 
     //#region Consultas XulambGames
+
+    private static Cliente buscarCliente(String nomeUsuario) {
+        return clientes.stream().filter(c -> c.getNomeUsuario().equals(nomeUsuario)).findFirst().orElse(null);
+    }
+
+
+    private static Jogo buscarJogo(String nomeJogo) {
+        return jogos.stream().filter(j -> j.getNome().equals(nomeJogo)).findFirst().orElse(null);
+    }
+
     public static double valorMensalVendido(int mesProcurado) {
         return compras.stream()
                 .filter(c -> c.getData().getMes() == mesProcurado)
