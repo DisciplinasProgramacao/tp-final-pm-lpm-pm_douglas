@@ -142,18 +142,48 @@ public class Sistema {
     }
 
     private static void menu4ValorMensalVendido() {
+        limparTela();
+        System.out.println("XULAMBS GAMES");
+        System.out.println("======== 4 - Valor Mensal Vendido =======");
+        System.out.println("Informe o mês e o ano buscado (Ex: 06/2022)");
+        String[] str = teclado.nextLine().split("/");
+        int mes = Integer.parseInt(str[0]);
+        int ano = Integer.parseInt(str[1]);
+        double valorMensalProcurado = valorMensalVendido(mes, ano);
+        System.out.println("O valor mensal vendido de " + mes + "/" + ano + " foi de R$" + valorMensalProcurado);
     }
 
     private static void menu5ValorMedioDasCompras() {
-
+        limparTela();
+        System.out.println("XULAMBS GAMES");
+        System.out.println("======== 5 - Valor Médio das Compras =======");
+        double valorMedio = valorMedioCompras();
+        System.out.println("O valor médio das compras é de: R$" + valorMedio);
+        System.out.println("Pressione qualquer tecla para voltar ao menu principal]");
+        teclado.nextLine();
+        menu(teclado);
     }
 
     private static void menu6JogoMaisVendido() {
-
+        limparTela();
+        System.out.println("XULAMBS GAMES");
+        System.out.println("======== 6 - Jogo Mais Vendido =======");
+        Jogo maisVendido = jogoMaisVendido();
+        System.out.println("O Jogo mais vendido é: " + maisVendido);
+        System.out.println("Pressione qualquer tecla para voltar ao menu principal]");
+        teclado.nextLine();
+        menu(teclado);
     }
 
     private static void menu7JogoMenosVendido() {
-
+        limparTela();
+        System.out.println("XULAMBS GAMES");
+        System.out.println("======== 7 - Jogo Menos Vendido =======");
+        Jogo menosVendido = jogoMenosVendido();
+        System.out.println("O Jogo mais vendido é: " + menosVendido);
+        System.out.println("Pressione qualquer tecla para voltar ao menu principal]");
+        teclado.nextLine();
+        menu(teclado);
     }
 
 
@@ -284,17 +314,17 @@ public class Sistema {
         return jogos.stream().filter(j -> j.getNome().equals(nomeJogo)).findFirst().orElse(null);
     }
 
-    public static double valorMensalVendido(int mesProcurado) {
-        return compras.stream()
-                .filter(c -> c.getData().getMes() == mesProcurado)
+    public static double valorMensalVendido(int mesProcurado, int anoProcurado) {
+        return Math.round(compras.stream()
+                .filter(c -> c.getData().getMes() == mesProcurado && c.getData().getAno() == anoProcurado)
                 .mapToDouble(Compra::getValorPago)
-                .sum();
+                .sum()*100.0)/100.0;
     }
 
     public static double valorMedioCompras() {
-        return compras.stream()
+        return Math.round(compras.stream()
                 .mapToDouble(Compra::getValorPago)
-                .sum();
+                .sum() * 100.0)/100.0;
     }
 
     public static Jogo jogoMaisVendido() {
