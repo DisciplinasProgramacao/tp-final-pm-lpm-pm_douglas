@@ -151,6 +151,8 @@ public class Sistema {
         int ano = Integer.parseInt(str[1]);
         double valorMensalProcurado = valorMensalVendido(mes, ano);
         System.out.println("O valor mensal vendido de " + mes + "/" + ano + " foi de R$" + valorMensalProcurado);
+        System.out.println("\nPressione qualquer tecla para voltar ao menu principal]");
+        teclado.nextLine();
     }
 
     private static void menu5ValorMedioDasCompras() {
@@ -159,9 +161,8 @@ public class Sistema {
         System.out.println("======== 5 - Valor Médio das Compras =======");
         double valorMedio = valorMedioCompras();
         System.out.println("O valor médio das compras é de: R$" + valorMedio);
-        System.out.println("Pressione qualquer tecla para voltar ao menu principal]");
+        System.out.println("\nPressione qualquer tecla para voltar ao menu principal]");
         teclado.nextLine();
-        menu(teclado);
     }
 
     private static void menu6JogoMaisVendido() {
@@ -170,9 +171,8 @@ public class Sistema {
         System.out.println("======== 6 - Jogo Mais Vendido =======");
         Jogo maisVendido = jogoMaisVendido();
         System.out.println("O Jogo mais vendido é: " + maisVendido);
-        System.out.println("Pressione qualquer tecla para voltar ao menu principal]");
+        System.out.println("\nPressione qualquer tecla para voltar ao menu principal]");
         teclado.nextLine();
-        menu(teclado);
     }
 
     private static void menu7JogoMenosVendido() {
@@ -181,9 +181,8 @@ public class Sistema {
         System.out.println("======== 7 - Jogo Menos Vendido =======");
         Jogo menosVendido = jogoMenosVendido();
         System.out.println("O Jogo mais vendido é: " + menosVendido);
-        System.out.println("Pressione qualquer tecla para voltar ao menu principal]");
+        System.out.println("\nPressione qualquer tecla para voltar ao menu principal]");
         teclado.nextLine();
-        menu(teclado);
     }
 
 
