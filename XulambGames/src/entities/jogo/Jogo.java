@@ -76,7 +76,7 @@ public class Jogo implements Serializable {
 
     //#region Métodos Específicos
     public String toString() {
-        return nome;
+        return nome + " - " + categoria.nome();
     }
 
     private boolean validaStringNullOuMenorQue1(String s) {

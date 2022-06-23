@@ -18,12 +18,12 @@ import util.Data;
 
 public class Sistema {
 
-    public static final String ARQ_DADOS = "clientes.bin";
+    public static final String ARQ_CLIENTES = "clientes.bin";
+    public static final String ARQ_JOGOS = "jogos.bin";
     static Scanner teclado = new Scanner(System.in);
 
-    private static List<Jogo> jogos = new ArrayList<>();
+    private static ArrayList<Jogo> jogos = new ArrayList<>();
     private static TreeMap<String, Cliente> clientes = new TreeMap<>();
-    private static List<Compra> compras = new ArrayList<>();
 
     static LocalDate today = LocalDate.now();
     static Data hoje = new Data(today.getDayOfMonth(), today.getMonthValue());
@@ -234,10 +234,8 @@ public class Sistema {
     public static void main(String[] args) {
 
         // inicializacao: leitura de dados do arquivo
-        clientes = lerClientes(ARQ_DADOS);
-
-        jogos.add(new Jogo("BTD6", CategoriaJogo.LANCAMENTO, 100, 110));
-        jogos.add(new Jogo("Overcooked", CategoriaJogo.REGULAR, 70, 70));
+        clientes = lerClientes(ARQ_CLIENTES);
+        jogos = lerJogos(ARQ_JOGOS);
 
         // c.comprar(jogos, hoje);
 
@@ -272,19 +270,14 @@ public class Sistema {
             }
             pausa(teclado);
             limparTela();
-            teclado.nextLine();
         } while (opcao != 0);
 
-        // testes
-        compras = getComprasClientes(clientes);
-        for (Compra compra : compras) {
-            System.out.println(compra);
-        }
-
-        escreverClientes(clientes, ARQ_DADOS);
+        // escrita de dados no arquivo
+        escreverClientes(clientes, ARQ_CLIENTES);
+        escreverJogos(jogos, ARQ_JOGOS);
     }
 
-    // #region Leitura de Clientes
+    // #region Leitura e Escrita
     public static void escreverClientes(TreeMap<String, Cliente> clientes, String nomeArq) {
 
         try {
@@ -329,13 +322,51 @@ public class Sistema {
         return clientes;
     }
 
-    public static ArrayList<Compra> getComprasClientes(TreeMap<String, Cliente> clientes) {
-        ArrayList<Compra> compras = new ArrayList<>();
-        for (Cliente c : clientes.values()) {
-            compras.addAll(c.getComprasHistorico());
+
+    public static void escreverJogos(ArrayList<Jogo> jogos, String nomeArq) {
+
+        try {
+            FileOutputStream fout = new FileOutputStream(nomeArq);
+            ObjectOutputStream arqSaida = new ObjectOutputStream(fout);
+            arqSaida.writeObject(jogos);
+            arqSaida.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Erro na escrita de dados: arquivo não encontrado");
+        } catch (IOException e) {
+            System.out.println("Erro na escrita de dados: " + e);
         }
-        return compras;
     }
+
+    public static ArrayList<Jogo> lerJogos(String nomeArq) {
+
+        ArrayList<Jogo> jogos = new ArrayList<>();
+        FileInputStream arq;
+        try {
+            arq = new FileInputStream(nomeArq);
+
+            ObjectInputStream arqLeitura;
+            arqLeitura = new ObjectInputStream(arq);
+
+            jogos = (ArrayList<Jogo>) arqLeitura.readObject();
+
+            for (Jogo jogo : jogos) {
+                System.out.println(jogo);
+            }
+
+            arqLeitura.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Erro na leitura de dados: arquivo não encontrado");
+        } catch (IOException e) {
+            System.out.println("Erro na leitura de dados: " + e);
+        } catch (ClassNotFoundException e) {
+            System.out.println("Erro na leitura de dados: Os dados não estão no formato correto");
+        }
+
+        return jogos;
+    }
+
     // #endregion
 
     // #region Consultas XulambGames
