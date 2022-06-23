@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDate;
 import java.util.*;
 
 import entities.Compra;
@@ -24,7 +25,8 @@ public class Sistema {
     private static TreeMap<String, Cliente> clientes = new TreeMap<>();
     private static List<Compra> compras = new ArrayList<>();
 
-    static Data hoje = new Data(Calendar.DAY_OF_MONTH, Calendar.MONTH);
+    static LocalDate today = LocalDate.now();
+    static Data hoje = new Data(today.getDayOfMonth(), today.getMonthValue());
 
     // #region Métodos do MENU
     public static void limparTela() {
@@ -104,6 +106,7 @@ public class Sistema {
             System.out.println("\n Deseja repetir a busca?");
             System.out.println("1 - SIM");
             System.out.println("2 - NÃO");
+            teclado.nextLine();
             int opcao = -1;
 
             try {
@@ -269,6 +272,7 @@ public class Sistema {
             }
             pausa(teclado);
             limparTela();
+            teclado.nextLine();
         } while (opcao != 0);
 
         // testes
@@ -345,19 +349,22 @@ public class Sistema {
     }
 
     public static double valorMensalVendido(int mesProcurado, int anoProcurado) {
-        return Math.round(compras.stream()
+        return Math.round(todasAsCompras().stream()
                 .filter(c -> c.getData().getMes() == mesProcurado && c.getData().getAno() == anoProcurado)
                 .mapToDouble(Compra::getValorPago)
                 .sum() * 100.0) / 100.0;
     }
 
     public static double valorMedioCompras() {
-        return Math.round(compras.stream()
+        ArrayList<Compra> todasAsCompras = todasAsCompras();
+        double valorTotal = Math.round(todasAsCompras.stream()
                 .mapToDouble(Compra::getValorPago)
                 .sum() * 100.0) / 100.0;
+        return valorTotal/todasAsCompras.size();
     }
 
     public static Jogo jogoMaisVendido() {
+
         return jogos.stream()
                 .max(Comparator.comparingInt(Jogo::getQtdVendas))
                 .orElse(null);
@@ -367,6 +374,14 @@ public class Sistema {
         return jogos.stream()
                 .min(Comparator.comparingInt(Jogo::getQtdVendas))
                 .orElse(null);
+    }
+
+    public static ArrayList<Compra> todasAsCompras() {
+        ArrayList<Compra> todasAsCompras = new ArrayList<>();
+        for (Cliente c : clientes.values()) {
+            todasAsCompras.addAll(c.getComprasHistorico());
+        }
+        return todasAsCompras;
     }
     // #endregion
 }
