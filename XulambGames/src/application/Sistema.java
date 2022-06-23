@@ -46,11 +46,12 @@ public class Sistema {
         System.out.println("1 - Cadastrar Cliente");
         System.out.println("2 - Registrar Compra");
         System.out.println("3 - Obter Histórico do Cliente");
+        System.out.println("4 - Cadastrar Jogo");
         System.out.println("======== CONSULTAS =======");
-        System.out.println("4 - Valor Mensal Vendido");
-        System.out.println("5 - Valor Médio das Compras");
-        System.out.println("6 - Jogo mais Vendido");
-        System.out.println("7 - Jogo menos Vendido");
+        System.out.println("5 - Valor Mensal Vendido");
+        System.out.println("6 - Valor Médio das Compras");
+        System.out.println("7 - Jogo mais Vendido");
+        System.out.println("8 - Jogo menos Vendido");
         System.out.println("0 - Sair");
         int opcao = 0;
         try {
@@ -131,24 +132,37 @@ public class Sistema {
         System.out.println("Digite a quantidade de jogos da compra");
         int qtdJogos = teclado.nextInt();
         for (int i = 0; i < qtdJogos; i++) {
-            System.out.println("Digite o nome do Jogo: ");
-            teclado.nextLine();
-            String nomeJogo = teclado.nextLine();
-            Jogo jogoProcurado = buscarJogo(nomeJogo);
-            if (jogoProcurado != null) {
+
+            System.out.println("\nJogos disponiveis: ");
+            for (int j = 0; j < jogos.size(); j++) {
+                System.out.println(j + " - " + jogos.get(j));
+            }
+            System.out.println("\nDigite o numero do jogo: ");
+            int opcao = -1;
+            try {
+                opcao = teclado.nextInt();
+                teclado.nextLine();
+            } catch (InputMismatchException ex) {
+                teclado.nextLine();
+                System.out.println("Somente opções numéricas.");
+                opcao = -1;
+            }
+            if (opcao >= 0 && opcao < jogos.size()) {
+                Jogo jogoProcurado = jogos.get(opcao);
                 jogosComprados.add(jogoProcurado);
             } else {
                 System.out.println("Jogo não encontrado!");
                 System.out.println("\n Deseja repetir a busca de todos os jogos?");
                 System.out.println("1 - SIM");
                 System.out.println("2 - NÃO");
-                int opcao = teclado.nextInt();
+                opcao = teclado.nextInt();
                 if (opcao == 1) {
                     menu2RegistrarCompra_Jogos();
                 } else {
                     return null;
                 }
             }
+
         }
         return jogosComprados;
     }
@@ -181,7 +195,41 @@ public class Sistema {
         }
     }
 
-    private static void menu4ValorMensalVendido() {
+    private static void menu4CadastroDeJogo() {
+        limparTela();
+        System.out.println("XULAMBS GAMES");
+        System.out.println("======== 1 - Cadastrar Jogo =======");
+        System.out.println("\nDigite o Nome do Jogo");
+        String nome = teclado.nextLine();
+        System.out.println("\nDigite o preço base do jogo");
+        double preco = teclado.nextDouble();
+        System.out.println("\nDigite o preço atual do jogo");
+        double precoAtual = teclado.nextDouble();
+        System.out.println("\nSelecione o tipo de jogo");
+        System.out.println("\n1 - Lancamento");
+        System.out.println("\n2 - Premium");
+        System.out.println("\n3 - Regular");
+        System.out.println("\n4 - Promocao");
+        CategoriaJogo categoriaJogo = CategoriaJogo.LANCAMENTO;
+        int nTipoJogo = teclado.nextInt();
+        switch (nTipoJogo) {
+            case 2:
+                categoriaJogo = CategoriaJogo.PREMIUM;
+                break;
+            case 3:
+                categoriaJogo = CategoriaJogo.REGULAR;
+                break;
+            case 4:
+                categoriaJogo = CategoriaJogo.PROMOCAO;
+                break;
+            default:
+                break;
+        }
+        jogos.add(new Jogo(nome, categoriaJogo, preco, precoAtual));
+        teclado.nextLine();
+    }
+
+    private static void menu5ValorMensalVendido() {
         limparTela();
         System.out.println("XULAMBS GAMES");
         System.out.println("======== 4 - Valor Mensal Vendido =======");
@@ -196,7 +244,7 @@ public class Sistema {
         menu(teclado);
     }
 
-    private static void menu5ValorMedioDasCompras() {
+    private static void menu6ValorMedioDasCompras() {
         limparTela();
         System.out.println("XULAMBS GAMES");
         System.out.println("======== 5 - Valor Médio das Compras =======");
@@ -207,7 +255,7 @@ public class Sistema {
         menu(teclado);
     }
 
-    private static void menu6JogoMaisVendido() {
+    private static void menu7JogoMaisVendido() {
         limparTela();
         System.out.println("XULAMBS GAMES");
         System.out.println("======== 6 - Jogo Mais Vendido =======");
@@ -218,7 +266,7 @@ public class Sistema {
         menu(teclado);
     }
 
-    private static void menu7JogoMenosVendido() {
+    private static void menu8JogoMenosVendido() {
         limparTela();
         System.out.println("XULAMBS GAMES");
         System.out.println("======== 7 - Jogo Menos Vendido =======");
@@ -260,13 +308,20 @@ public class Sistema {
                     menu3ObterHistoricoDoCliente();
                     break;
                 case 4:
-                    menu4ValorMensalVendido();
+                    menu4CadastroDeJogo();
+                    break;
                 case 5:
-                    menu5ValorMedioDasCompras();
+                    menu5ValorMensalVendido();
+                    break;
                 case 6:
-                    menu6JogoMaisVendido();
+                    menu6ValorMedioDasCompras();
+                    break;
                 case 7:
-                    menu7JogoMenosVendido();
+                    menu7JogoMaisVendido();
+                    break;
+                case 8:
+                    menu8JogoMenosVendido();
+                    break;
             }
             pausa(teclado);
             limparTela();
@@ -321,7 +376,6 @@ public class Sistema {
 
         return clientes;
     }
-
 
     public static void escreverJogos(ArrayList<Jogo> jogos, String nomeArq) {
 
@@ -391,7 +445,7 @@ public class Sistema {
         double valorTotal = Math.round(todasAsCompras.stream()
                 .mapToDouble(Compra::getValorPago)
                 .sum() * 100.0) / 100.0;
-        return valorTotal/todasAsCompras.size();
+        return valorTotal / todasAsCompras.size();
     }
 
     public static Jogo jogoMaisVendido() {
