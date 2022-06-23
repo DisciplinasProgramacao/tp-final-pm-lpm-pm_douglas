@@ -123,15 +123,6 @@ public class Cliente implements Serializable {
         return compra;
     }
 
-    /*
-    * ###ATENÇÃO ###
-    * Necessário fazer 2 tipos de relatórios
-    * 1 - por categoria de jogo
-    * 2 - por data
-    * O méotodo "historicoCompleto" está sendo usado pelo "toString"
-    * Talvez seja melhor fazer um "tostring" curto somente com nome e nome de usuário ou algo semelhante
-    * Talvez vale a pena deixar esse "historicoCompleto" ou simplesmente tirar tudo
-    * */
     public String historicoCompleto() {
         StringBuilder sb = new StringBuilder();
         sb.append("Histórico:");
@@ -165,6 +156,10 @@ public class Cliente implements Serializable {
 
     private boolean validaStringNullOuMenorQue5(String s) {
         return s == null || s.length() < 5;
+    }
+
+    public void alterarTipo(TipoCliente novoTipo) {
+        this.tipo = novoTipo;
     }
 
     /**
