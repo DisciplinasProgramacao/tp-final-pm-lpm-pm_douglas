@@ -114,12 +114,13 @@ public class Cliente implements Serializable {
      * @param j lista de jogos comprados
      * @param data data da compra
      */
-    public void comprar(ArrayList<Jogo> j, Data data) {
+    public Compra comprar(ArrayList<Jogo> j, Data data) {
         Compra compra = new Compra(j, valorAPagar(), data);
         comprasHistorico.add(compra);
         for (Jogo jogo : j) {
             jogo.registrarVenda();
         }
+        return compra;
     }
 
     /*

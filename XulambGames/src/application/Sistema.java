@@ -20,23 +20,24 @@ public class Sistema {
     public static final String ARQ_DADOS = "clientes.bin";
     static Scanner teclado = new Scanner(System.in);
 
-
     private static List<Jogo> jogos = new ArrayList<>();
     private static TreeMap<String, Cliente> clientes = new TreeMap<>();
     private static List<Compra> compras = new ArrayList<>();
 
-    //#region Métodos do MENU
-    public static void limparTela(){
+    static Data hoje = new Data(Calendar.DAY_OF_MONTH, Calendar.MONTH);
+
+    // #region Métodos do MENU
+    public static void limparTela() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
-    static void pausa(Scanner teclado){
+    static void pausa(Scanner teclado) {
         System.out.println("Enter para continuar.");
         teclado.nextLine();
     }
 
-    public static int menu(Scanner teclado){
+    public static int menu(Scanner teclado) {
         limparTela();
         System.out.println("XULAMBS GAMES");
         System.out.println("======== OPERAÇÕES =======");
@@ -49,11 +50,11 @@ public class Sistema {
         System.out.println("6 - Jogo mais Vendido");
         System.out.println("7 - Jogo menos Vendido");
         System.out.println("0 - Sair");
-        int opcao=0;
-        try{
+        int opcao = 0;
+        try {
             opcao = teclado.nextInt();
             teclado.nextLine();
-        }catch(InputMismatchException ex){
+        } catch (InputMismatchException ex) {
             teclado.nextLine();
             System.out.println("Somente opções numéricas.");
             opcao = -1;
@@ -88,7 +89,7 @@ public class Sistema {
             default:
                 break;
         }
-        clientes.put(nome, new Cliente(nome, username, senha,tipoCliente));
+        clientes.put(nome, new Cliente(nome, username, senha, tipoCliente));
         teclado.nextLine();
     }
 
@@ -98,18 +99,28 @@ public class Sistema {
         System.out.println("======== 2 - Registrar Compra =======");
         System.out.println("\nDigite o nome de usuário do cliente");
         Cliente cliente = buscarCliente(teclado.nextLine());
-        if(cliente == null) {
+        if (cliente == null) {
             System.out.println("Cliente não Registrado!");
             System.out.println("\n Deseja repetir a busca?");
             System.out.println("1 - SIM");
             System.out.println("2 - NÃO");
-            int opcao = teclado.nextInt();
-            if(opcao == 1)
+            int opcao = -1;
+
+            try {
+                opcao = teclado.nextInt();
+                teclado.nextLine();
+            } catch (InputMismatchException ex) {
+                teclado.nextLine();
+            }
+            if (opcao == 1)
                 menu2RegistrarCompra();
             else
                 menu(teclado);
         }
         ArrayList<Jogo> jogosComprados = menu2RegistrarCompra_Jogos();
+
+        Compra novaCompra = cliente.comprar(jogosComprados, hoje);
+        System.out.println(novaCompra);
     }
 
     private static ArrayList<Jogo> menu2RegistrarCompra_Jogos() {
@@ -118,9 +129,10 @@ public class Sistema {
         int qtdJogos = teclado.nextInt();
         for (int i = 0; i < qtdJogos; i++) {
             System.out.println("Digite o nome do Jogo: ");
+            teclado.nextLine();
             String nomeJogo = teclado.nextLine();
             Jogo jogoProcurado = buscarJogo(nomeJogo);
-            if(jogoProcurado != null) {
+            if (jogoProcurado != null) {
                 jogosComprados.add(jogoProcurado);
             } else {
                 System.out.println("Jogo não encontrado!");
@@ -139,7 +151,31 @@ public class Sistema {
     }
 
     private static void menu3ObterHistoricoDoCliente() {
+        limparTela();
+        System.out.println("XULAMBS GAMES");
+        System.out.println("======== 3 - Obter Histórico do Cliente =======");
+        System.out.println("\nDigite o nome de usuário do Cliente");
+        Cliente cliente = buscarCliente(teclado.nextLine());
+        if (cliente == null) {
+            System.out.println("Cliente não Registrado!");
+            System.out.println("\n Deseja repetir a busca?");
+            System.out.println("1 - SIM");
+            System.out.println("2 - NÃO");
+            int opcao = -1;
 
+            try {
+                opcao = teclado.nextInt();
+                teclado.nextLine();
+            } catch (InputMismatchException ex) {
+                teclado.nextLine();
+            }
+            if (opcao == 1)
+                menu3ObterHistoricoDoCliente();
+            else
+                menu(teclado);
+        } else {
+            System.out.println(cliente.historicoCompleto());
+        }
     }
 
     private static void menu4ValorMensalVendido() {
@@ -184,27 +220,21 @@ public class Sistema {
         System.out.println("XULAMBS GAMES");
         System.out.println("======== 7 - Jogo Menos Vendido =======");
         Jogo menosVendido = jogoMenosVendido();
-        System.out.println("O Jogo mais vendido é: " + menosVendido);
+        System.out.println("O Jogo menos vendido é: " + menosVendido);
         System.out.println("\nPressione qualquer tecla para voltar ao menu principal");
         teclado.nextLine();
         menu(teclado);
     }
 
-
-
-    //#endregion
+    // #endregion
 
     public static void main(String[] args) {
 
         // inicializacao: leitura de dados do arquivo
         clientes = lerClientes(ARQ_DADOS);
 
-        // Cliente c = new Cliente("Leticia", "leticia", "123456", TipoCliente.FANATICO);
-        // Cliente c1 = new Cliente("Leticia", "leticia1", "123456", TipoCliente.EMPOLGADO);
-
-        // jogos.add(new Jogo("BTD6", CategoriaJogo.LANCAMENTO, 100, 110));
-
-        // Data hoje = new Data(10, 6, 2022);
+        jogos.add(new Jogo("BTD6", CategoriaJogo.LANCAMENTO, 100, 110));
+        jogos.add(new Jogo("Overcooked", CategoriaJogo.REGULAR, 70, 70));
 
         // c.comprar(jogos, hoje);
 
@@ -214,11 +244,11 @@ public class Sistema {
         // clientes.put(c1.getNomeUsuario(), c1);
 
         int opcao;
-        do{
+        do {
 
             opcao = menu(teclado);
 
-            switch(opcao){
+            switch (opcao) {
                 case 1:
                     menu1CadastroDeCliente();
                     break;
@@ -239,8 +269,7 @@ public class Sistema {
             }
             pausa(teclado);
             limparTela();
-        }while(opcao!=0);
-
+        } while (opcao != 0);
 
         // testes
         compras = getComprasClientes(clientes);
@@ -251,7 +280,7 @@ public class Sistema {
         escreverClientes(clientes, ARQ_DADOS);
     }
 
-    //#region Leitura de Clientes
+    // #region Leitura de Clientes
     public static void escreverClientes(TreeMap<String, Cliente> clientes, String nomeArq) {
 
         try {
@@ -260,9 +289,6 @@ public class Sistema {
             arqSaida.writeObject(clientes);
             arqSaida.close();
 
-            for (Cliente c : clientes.values()) {
-                System.out.println(c);
-            }
         } catch (FileNotFoundException e) {
             System.out.println("Erro na escrita de dados: arquivo não encontrado");
         } catch (IOException e) {
@@ -279,6 +305,10 @@ public class Sistema {
 
             ObjectInputStream arqLeitura;
             arqLeitura = new ObjectInputStream(arq);
+
+            for (Cliente c : clientes.values()) {
+                System.out.println(c);
+            }
 
             clientes = (TreeMap<String, Cliente>) arqLeitura.readObject();
 
@@ -302,14 +332,13 @@ public class Sistema {
         }
         return compras;
     }
-    //#endregion
+    // #endregion
 
-    //#region Consultas XulambGames
+    // #region Consultas XulambGames
 
     private static Cliente buscarCliente(String nomeUsuario) {
         return clientes.values().stream().filter(c -> c.getNomeUsuario().equals(nomeUsuario)).findFirst().orElse(null);
     }
-
 
     private static Jogo buscarJogo(String nomeJogo) {
         return jogos.stream().filter(j -> j.getNome().equals(nomeJogo)).findFirst().orElse(null);
@@ -319,13 +348,13 @@ public class Sistema {
         return Math.round(compras.stream()
                 .filter(c -> c.getData().getMes() == mesProcurado && c.getData().getAno() == anoProcurado)
                 .mapToDouble(Compra::getValorPago)
-                .sum()*100.0)/100.0;
+                .sum() * 100.0) / 100.0;
     }
 
     public static double valorMedioCompras() {
         return Math.round(compras.stream()
                 .mapToDouble(Compra::getValorPago)
-                .sum() * 100.0)/100.0;
+                .sum() * 100.0) / 100.0;
     }
 
     public static Jogo jogoMaisVendido() {
@@ -339,5 +368,5 @@ public class Sistema {
                 .min(Comparator.comparingInt(Jogo::getQtdVendas))
                 .orElse(null);
     }
-    //#endregion
+    // #endregion
 }
