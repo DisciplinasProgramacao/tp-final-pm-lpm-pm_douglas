@@ -22,7 +22,7 @@ public class Sistema {
 
 
     private static List<Jogo> jogos = new ArrayList<>();
-    private static List<Cliente> clientes = new ArrayList<>();
+    private static TreeMap<String, Cliente> clientes = new TreeMap<>();
     private static List<Compra> compras = new ArrayList<>();
 
     //#region Métodos do MENU
@@ -88,7 +88,7 @@ public class Sistema {
             default:
                 break;
         }
-        clientes.add(new Cliente(nome, username, senha,tipoCliente));
+        clientes.put(nome, new Cliente(nome, username, senha,tipoCliente));
         teclado.nextLine();
     }
 
@@ -196,10 +196,6 @@ public class Sistema {
 
     public static void main(String[] args) {
 
-        TreeMap<String, Cliente> clientes = new TreeMap<>();
-       ArrayList<Compra> compras = new ArrayList<Compra>();
-       ArrayList<Jogo> jogos = new ArrayList<Jogo>();
-
         // inicializacao: leitura de dados do arquivo
         clientes = lerClientes(ARQ_DADOS);
 
@@ -251,9 +247,6 @@ public class Sistema {
         for (Compra compra : compras) {
             System.out.println(compra);
         }
-        for (Cliente cl : clientes.values()) {
-            System.out.println(cl);
-        }
 
         escreverClientes(clientes, ARQ_DADOS);
     }
@@ -266,6 +259,10 @@ public class Sistema {
             ObjectOutputStream arqSaida = new ObjectOutputStream(fout);
             arqSaida.writeObject(clientes);
             arqSaida.close();
+
+            for (Cliente c : clientes.values()) {
+                System.out.println(c);
+            }
         } catch (FileNotFoundException e) {
             System.out.println("Erro na escrita de dados: arquivo não encontrado");
         } catch (IOException e) {
@@ -310,7 +307,7 @@ public class Sistema {
     //#region Consultas XulambGames
 
     private static Cliente buscarCliente(String nomeUsuario) {
-        return clientes.stream().filter(c -> c.getNomeUsuario().equals(nomeUsuario)).findFirst().orElse(null);
+        return clientes.values().stream().filter(c -> c.getNomeUsuario().equals(nomeUsuario)).findFirst().orElse(null);
     }
 
 
