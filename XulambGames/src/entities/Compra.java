@@ -135,7 +135,7 @@ public class Compra implements Serializable {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(valorPago);
+        sb.append(String.format("%.2f",valorPago));
         sb.append("\t" + data);
         for (Jogo jogo : jogos) {
             sb.append("\n + Jogo: ").append(jogo.toString());

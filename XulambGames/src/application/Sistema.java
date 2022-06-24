@@ -260,7 +260,7 @@ public class Sistema {
         System.out.println("XULAMBS GAMES");
         System.out.println("======== 6 - Jogo Mais Vendido =======");
         Jogo maisVendido = jogoMaisVendido();
-        System.out.println("O Jogo mais vendido é: " + maisVendido);
+        System.out.println("O Jogo mais vendido é: " + maisVendido.getNome() + " com " + maisVendido.getQtdVendas() + " unidades vendidas");
         System.out.println("\nPressione qualquer tecla para voltar ao menu principal");
         teclado.nextLine();
         menu(teclado);
@@ -269,9 +269,9 @@ public class Sistema {
     private static void menu8JogoMenosVendido() {
         limparTela();
         System.out.println("XULAMBS GAMES");
-        System.out.println("======== 7 - Jogo Menos Vendido =======");
+        System.out.println("======== 8 - Jogo Menos Vendido =======");
         Jogo menosVendido = jogoMenosVendido();
-        System.out.println("O Jogo menos vendido é: " + menosVendido);
+        System.out.println("O Jogo menos vendido é: " + menosVendido.getNome() + " com " + menosVendido.getQtdVendas() + " unidades vendidas");
         System.out.println("\nPressione qualquer tecla para voltar ao menu principal");
         teclado.nextLine();
         menu(teclado);
@@ -284,13 +284,6 @@ public class Sistema {
         // inicializacao: leitura de dados do arquivo
         clientes = lerClientes(ARQ_CLIENTES);
         jogos = lerJogos(ARQ_JOGOS);
-
-        // c.comprar(jogos, hoje);
-
-        // c1.comprar(jogos, hoje);
-
-        // clientes.put(c.getNomeUsuario(), c);
-        // clientes.put(c1.getNomeUsuario(), c1);
 
         int opcao;
         do {
