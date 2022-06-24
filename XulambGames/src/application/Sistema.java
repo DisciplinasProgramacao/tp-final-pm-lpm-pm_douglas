@@ -45,13 +45,14 @@ public class Sistema {
         System.out.println("======== OPERAÇÕES =======");
         System.out.println("1 - Cadastrar Cliente");
         System.out.println("2 - Registrar Compra");
-        System.out.println("3 - Obter Histórico do Cliente");
-        System.out.println("4 - Cadastrar Jogo");
+        System.out.println("3 - Alterar Categoria do Cliente");
+        System.out.println("4 - Obter Histórico do Cliente");
+        System.out.println("5 - Cadastrar Jogo");
         System.out.println("======== CONSULTAS =======");
-        System.out.println("5 - Valor Mensal Vendido");
-        System.out.println("6 - Valor Médio das Compras");
-        System.out.println("7 - Jogo mais Vendido");
-        System.out.println("8 - Jogo menos Vendido");
+        System.out.println("6 - Valor Mensal Vendido");
+        System.out.println("7 - Valor Médio das Compras");
+        System.out.println("8 - Jogo mais Vendido");
+        System.out.println("9 - Jogo menos Vendido");
         System.out.println("0 - Sair");
         int opcao = 0;
         try {
