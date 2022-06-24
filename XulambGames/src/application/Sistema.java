@@ -65,7 +65,7 @@ public class Sistema {
         return opcao;
     }
 
-    private static void menu1CadastroDeCliente() {
+    private static void menuCadastroDeCliente() {
         limparTela();
         System.out.println("XULAMBS GAMES");
         System.out.println("======== 1 - Cadastrar Cliente =======");
@@ -96,7 +96,7 @@ public class Sistema {
         teclado.nextLine();
     }
 
-    private static void menu2RegistrarCompra() {
+    private static void menuRegistrarCompra() {
         limparTela();
         System.out.println("XULAMBS GAMES");
         System.out.println("======== 2 - Registrar Compra =======");
@@ -117,17 +117,17 @@ public class Sistema {
                 teclado.nextLine();
             }
             if (opcao == 1)
-                menu2RegistrarCompra();
+                menuRegistrarCompra();
             else
                 menu(teclado);
         }
-        ArrayList<Jogo> jogosComprados = menu2RegistrarCompra_Jogos();
+        ArrayList<Jogo> jogosComprados = menuRegistrarCompra_Jogos();
 
         Compra novaCompra = cliente.comprar(jogosComprados, hoje);
         System.out.println(novaCompra);
     }
 
-    private static ArrayList<Jogo> menu2RegistrarCompra_Jogos() {
+    private static ArrayList<Jogo> menuRegistrarCompra_Jogos() {
         ArrayList<Jogo> jogosComprados = new ArrayList<>();
         System.out.println("Digite a quantidade de jogos da compra");
         int qtdJogos = teclado.nextInt();
@@ -157,7 +157,7 @@ public class Sistema {
                 System.out.println("2 - NÃO");
                 opcao = teclado.nextInt();
                 if (opcao == 1) {
-                    menu2RegistrarCompra_Jogos();
+                    menuRegistrarCompra_Jogos();
                 } else {
                     return null;
                 }
@@ -167,7 +167,27 @@ public class Sistema {
         return jogosComprados;
     }
 
-    private static void menu3ObterHistoricoDoCliente() {
+    private static void menuAlterarCategoriaCliente() {
+        limparTela();
+        System.out.println("XULAMBS GAMES");
+        System.out.println("======== Alterar categoria do cliente =======");
+        System.out.println("\nDigite o nome de usuário do cliente");
+        Cliente cliente = buscarCliente(teclado.nextLine());
+        if (cliente == null) {
+            System.out.println("Cliente não Registrado!");
+            System.out.println("\n Deseja repetir a busca?");
+            System.out.println("1 - SIM");
+            System.out.println("2 - NÃO");
+            teclado.nextLine();
+            int opcao = getOpcaoIntTeclado();
+            if (opcao == 1)
+                menuRegistrarCompra();
+            else
+                menu(teclado);
+        }
+    }
+
+    private static void menuObterHistoricoDoCliente() {
         limparTela();
         System.out.println("XULAMBS GAMES");
         System.out.println("======== 3 - Obter Histórico do Cliente =======");
@@ -187,7 +207,7 @@ public class Sistema {
                 teclado.nextLine();
             }
             if (opcao == 1)
-                menu3ObterHistoricoDoCliente();
+                menuObterHistoricoDoCliente();
             else
                 menu(teclado);
         } else {
@@ -195,7 +215,7 @@ public class Sistema {
         }
     }
 
-    private static void menu4CadastroDeJogo() {
+    private static void menuCadastroDeJogo() {
         limparTela();
         System.out.println("XULAMBS GAMES");
         System.out.println("======== 1 - Cadastrar Jogo =======");
@@ -229,7 +249,7 @@ public class Sistema {
         teclado.nextLine();
     }
 
-    private static void menu5ValorMensalVendido() {
+    private static void menuValorMensalVendido() {
         limparTela();
         System.out.println("XULAMBS GAMES");
         System.out.println("======== 4 - Valor Mensal Vendido =======");
@@ -244,7 +264,7 @@ public class Sistema {
         menu(teclado);
     }
 
-    private static void menu6ValorMedioDasCompras() {
+    private static void menuValorMedioDasCompras() {
         limparTela();
         System.out.println("XULAMBS GAMES");
         System.out.println("======== 5 - Valor Médio das Compras =======");
@@ -255,7 +275,7 @@ public class Sistema {
         menu(teclado);
     }
 
-    private static void menu7JogoMaisVendido() {
+    private static void menuJogoMaisVendido() {
         limparTela();
         System.out.println("XULAMBS GAMES");
         System.out.println("======== 6 - Jogo Mais Vendido =======");
@@ -266,7 +286,7 @@ public class Sistema {
         menu(teclado);
     }
 
-    private static void menu8JogoMenosVendido() {
+    private static void menuJogoMenosVendido() {
         limparTela();
         System.out.println("XULAMBS GAMES");
         System.out.println("======== 8 - Jogo Menos Vendido =======");
@@ -275,6 +295,22 @@ public class Sistema {
         System.out.println("\nPressione qualquer tecla para voltar ao menu principal");
         teclado.nextLine();
         menu(teclado);
+    }
+
+    /**
+     * Opções inválidas são desconsideradas
+     * @param opcao
+     * @return
+     */
+    private static int getOpcaoIntTeclado() {
+        int opcao = -1;
+        try {
+            opcao = teclado.nextInt();
+            teclado.nextLine();
+        } catch (InputMismatchException ex) {
+            teclado.nextLine();
+        }
+        return opcao;
     }
 
     // #endregion
@@ -292,28 +328,31 @@ public class Sistema {
 
             switch (opcao) {
                 case 1:
-                    menu1CadastroDeCliente();
+                    menuCadastroDeCliente();
                     break;
                 case 2:
-                    menu2RegistrarCompra();
+                    menuRegistrarCompra();
                     break;
                 case 3:
-                    menu3ObterHistoricoDoCliente();
+                    menuAlterarCategoriaCliente();
                     break;
                 case 4:
-                    menu4CadastroDeJogo();
+                    menuObterHistoricoDoCliente();
                     break;
                 case 5:
-                    menu5ValorMensalVendido();
+                    menuCadastroDeJogo();
                     break;
                 case 6:
-                    menu6ValorMedioDasCompras();
+                    menuValorMensalVendido();
                     break;
                 case 7:
-                    menu7JogoMaisVendido();
+                    menuValorMedioDasCompras();
                     break;
                 case 8:
-                    menu8JogoMenosVendido();
+                    menuJogoMaisVendido();
+                    break;
+                case 9:
+                    menuJogoMenosVendido();
                     break;
             }
             pausa(teclado);
