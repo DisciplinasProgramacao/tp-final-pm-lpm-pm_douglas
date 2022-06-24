@@ -14,6 +14,8 @@ import entities.cliente.Cliente;
 import entities.cliente.TipoCliente;
 import entities.jogo.CategoriaJogo;
 import entities.jogo.Jogo;
+import util.CadastroClienteException;
+import util.CadastroJogoException;
 import util.Data;
 
 public class Sistema {
@@ -71,30 +73,40 @@ public class Sistema {
         System.out.println("XULAMBS GAMES");
         System.out.println("======== 1 - Cadastrar Cliente =======");
         System.out.println("\nDigite o Nome do Cliente");
-        String nome = teclado.nextLine();
-        System.out.println("\nDigite o Nome de Usuário do Cliente");
-        String username = teclado.nextLine();
-        System.out.println("\nDigite a Senha do Usuário");
-        String senha = teclado.nextLine();
-        System.out.println("\nSelecione o tipo do Cliente");
-        System.out.println("\n1 - Cliente CADASTRADO");
-        System.out.println("\n2 - Cliente EMPOLGADO");
-        System.out.println("\n3 - Cliente FANÁTICO");
-        TipoCliente tipoCliente = TipoCliente.CADASTRADO;
-        int nTipoCliente = teclado.nextInt();
-        switch (nTipoCliente) {
-            case 2:
-                tipoCliente = TipoCliente.EMPOLGADO;
-                break;
-            case 3:
-                tipoCliente = TipoCliente.FANATICO;
-                break;
-            case 1:
-            default:
-                break;
+
+        try {
+            String nome = teclado.nextLine();
+            System.out.println("\nDigite o Nome de Usuário do Cliente");
+            String username = teclado.nextLine();
+            System.out.println("\nDigite a Senha do Usuário");
+            String senha = teclado.nextLine();
+            System.out.println("\nSelecione o tipo do Cliente");
+            System.out.println("\n1 - Cliente CADASTRADO");
+            System.out.println("\n2 - Cliente EMPOLGADO");
+            System.out.println("\n3 - Cliente FANÁTICO");
+            TipoCliente tipoCliente = TipoCliente.CADASTRADO;
+            int nTipoCliente = teclado.nextInt();
+            switch (nTipoCliente) {
+                case 2:
+                    tipoCliente = TipoCliente.EMPOLGADO;
+                    break;
+                case 3:
+                    tipoCliente = TipoCliente.FANATICO;
+                    break;
+                case 1:
+                default:
+                    break;
+            }
+            clientes.put(nome, new Cliente(nome, username, senha, tipoCliente));
+            teclado.nextLine();
+
+        } catch (CadastroClienteException ex) {
+            teclado.nextLine();
+            System.out.println("Erro: " + ex.getMessage());
+        } catch (InputMismatchException ex) {
+            teclado.nextLine();
+            System.out.println("Somente opções numéricas.");
         }
-        clientes.put(nome, new Cliente(nome, username, senha, tipoCliente));
-        teclado.nextLine();
     }
 
     private static void menuRegistrarCompra() {
@@ -171,7 +183,7 @@ public class Sistema {
     private static void menuAlterarCategoriaCliente() {
         limparTela();
         System.out.println("XULAMBS GAMES");
-        System.out.println("======== Alterar categoria do cliente =======");
+        System.out.println("======== 3 - Alterar categoria do cliente =======");
         System.out.println("\nDigite o nome de usuário do cliente");
         Cliente cliente = buscarCliente(teclado.nextLine());
         if (cliente == null) {
@@ -217,7 +229,7 @@ public class Sistema {
     private static void menuObterHistoricoDoCliente() {
         limparTela();
         System.out.println("XULAMBS GAMES");
-        System.out.println("======== 3 - Obter Histórico do Cliente =======");
+        System.out.println("======== 4 - Obter Histórico do Cliente =======");
         System.out.println("\nDigite o nome de usuário do Cliente");
         Cliente cliente = buscarCliente(teclado.nextLine());
         if (cliente == null) {
@@ -245,20 +257,19 @@ public class Sistema {
     private static void menuCadastroDeJogo() {
         limparTela();
         System.out.println("XULAMBS GAMES");
-        System.out.println("======== 1 - Cadastrar Jogo =======");
+        System.out.println("======== 5 - Cadastrar Jogo =======");
         System.out.println("\nDigite o Nome do Jogo");
-        String nome = teclado.nextLine();
-        System.out.println("\nDigite o preço base do jogo");
-        double preco = teclado.nextDouble();
-        System.out.println("\nDigite o preço atual do jogo");
-        double precoAtual = teclado.nextDouble();
-        System.out.println("\nSelecione o tipo de jogo");
-        System.out.println("\n1 - Lancamento");
-        System.out.println("\n2 - Premium");
-        System.out.println("\n3 - Regular");
-        System.out.println("\n4 - Promocao");
-        CategoriaJogo categoriaJogo = CategoriaJogo.LANCAMENTO;
+
         try {
+            String nome = teclado.nextLine();
+
+            System.out.println("\nSelecione o tipo de jogo");
+            System.out.println("\n1 - Lancamento");
+            System.out.println("\n2 - Premium");
+            System.out.println("\n3 - Regular");
+            System.out.println("\n4 - Promocao");
+            CategoriaJogo categoriaJogo = CategoriaJogo.LANCAMENTO;
+
             int nTipoJogo = teclado.nextInt();
             switch (nTipoJogo) {
                 case 2:
@@ -272,19 +283,29 @@ public class Sistema {
                     break;
                 default:
                     break;
+
             }
+            System.out.println("\nDigite o preço base do jogo");
+            double preco = teclado.nextDouble();
+            System.out.println("\nDigite o preço atual do jogo");
+            double precoAtual = teclado.nextDouble();
+
             jogos.add(new Jogo(nome, categoriaJogo, preco, precoAtual));
             teclado.nextLine();
+        } catch (CadastroJogoException ex) {
+            teclado.nextLine();
+            System.out.println("Erro: " + ex.getMessage());
         } catch (InputMismatchException ex) {
             teclado.nextLine();
             System.out.println("Somente opções numéricas.");
         }
+
     }
 
     private static void menuValorMensalVendido() {
         limparTela();
         System.out.println("XULAMBS GAMES");
-        System.out.println("======== 4 - Valor Mensal Vendido =======");
+        System.out.println("======== 6 - Valor Mensal Vendido =======");
         System.out.println("Informe o mês e o ano buscado (Ex: 06/2022)");
         String[] str = teclado.nextLine().split("/");
         int mes = Integer.parseInt(str[0]);
@@ -299,7 +320,7 @@ public class Sistema {
     private static void menuValorMedioDasCompras() {
         limparTela();
         System.out.println("XULAMBS GAMES");
-        System.out.println("======== 5 - Valor Médio das Compras =======");
+        System.out.println("======== 7 - Valor Médio das Compras =======");
         double valorMedio = valorMedioCompras();
         System.out.println("O valor médio das compras é de: R$" + valorMedio);
         System.out.println("\nPressione qualquer tecla para voltar ao menu principal");
@@ -310,7 +331,7 @@ public class Sistema {
     private static void menuJogoMaisVendido() {
         limparTela();
         System.out.println("XULAMBS GAMES");
-        System.out.println("======== 6 - Jogo Mais Vendido =======");
+        System.out.println("======== 8 - Jogo Mais Vendido =======");
         Jogo maisVendido = jogoMaisVendido();
         System.out.println("O Jogo mais vendido é: " + maisVendido.getNome() + " com " + maisVendido.getQtdVendas()
                 + " unidades vendidas");
@@ -322,7 +343,7 @@ public class Sistema {
     private static void menuJogoMenosVendido() {
         limparTela();
         System.out.println("XULAMBS GAMES");
-        System.out.println("======== 8 - Jogo Menos Vendido =======");
+        System.out.println("======== 9 - Jogo Menos Vendido =======");
         Jogo menosVendido = jogoMenosVendido();
         System.out.println("O Jogo menos vendido é: " + menosVendido.getNome() + " com " + menosVendido.getQtdVendas()
                 + " unidades vendidas");
