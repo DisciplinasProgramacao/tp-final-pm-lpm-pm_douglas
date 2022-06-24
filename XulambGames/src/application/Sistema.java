@@ -131,8 +131,6 @@ public class Sistema {
             }
             if (opcao == 1)
                 menuRegistrarCompra();
-            else
-                menu(teclado);
         }
         ArrayList<Jogo> jogosComprados = menuRegistrarCompra_Jogos();
 
@@ -195,8 +193,6 @@ public class Sistema {
             int opcao = getOpcaoIntTeclado();
             if (opcao == 1)
                 menuRegistrarCompra();
-            else
-                menu(teclado);
         }
         System.out.println("\nSelecione o tipo do Cliente");
         System.out.println("\n1 - Cliente CADASTRADO");
@@ -247,8 +243,6 @@ public class Sistema {
             }
             if (opcao == 1)
                 menuObterHistoricoDoCliente();
-            else
-                menu(teclado);
         } else {
             System.out.println(cliente.toString());
         }
@@ -307,14 +301,22 @@ public class Sistema {
         System.out.println("XULAMBS GAMES");
         System.out.println("======== 6 - Valor Mensal Vendido =======");
         System.out.println("Informe o mês e o ano buscado (Ex: 06/2022)");
-        String[] str = teclado.nextLine().split("/");
-        int mes = Integer.parseInt(str[0]);
-        int ano = Integer.parseInt(str[1]);
-        double valorMensalProcurado = valorMensalVendido(mes, ano);
-        System.out.println("O valor mensal vendido de " + mes + "/" + ano + " foi de R$" + valorMensalProcurado);
-        System.out.println("\nPressione qualquer tecla para voltar ao menu principal");
-        teclado.nextLine();
-        menu(teclado);
+        try {
+            
+            String[] str = teclado.nextLine().split("/");
+            int mes = Integer.parseInt(str[0]);
+            int ano = Integer.parseInt(str[1]);
+            double valorMensalProcurado = valorMensalVendido(mes, ano);
+            System.out.println("O valor mensal vendido de " + mes + "/" + ano + " foi de R$" + valorMensalProcurado);
+            System.out.println("\nPressione qualquer tecla para voltar ao menu principal");
+
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            System.out.println("Erro no formato inserido. Insira no formato MM/YYYY (Ex: 06/2022)");
+            teclado.nextLine();
+        } catch (NumberFormatException ex) {
+            System.out.println("Erro no formato inserido. Insira no formato MM/YYYY (Ex: 06/2022)");
+            teclado.nextLine();
+        }
     }
 
     private static void menuValorMedioDasCompras() {
@@ -323,9 +325,6 @@ public class Sistema {
         System.out.println("======== 7 - Valor Médio das Compras =======");
         double valorMedio = valorMedioCompras();
         System.out.println("O valor médio das compras é de: R$" + valorMedio);
-        System.out.println("\nPressione qualquer tecla para voltar ao menu principal");
-        teclado.nextLine();
-        menu(teclado);
     }
 
     private static void menuJogoMaisVendido() {
@@ -335,9 +334,6 @@ public class Sistema {
         Jogo maisVendido = jogoMaisVendido();
         System.out.println("O Jogo mais vendido é: " + maisVendido.getNome() + " com " + maisVendido.getQtdVendas()
                 + " unidades vendidas");
-        System.out.println("\nPressione qualquer tecla para voltar ao menu principal");
-        teclado.nextLine();
-        menu(teclado);
     }
 
     private static void menuJogoMenosVendido() {
@@ -347,9 +343,6 @@ public class Sistema {
         Jogo menosVendido = jogoMenosVendido();
         System.out.println("O Jogo menos vendido é: " + menosVendido.getNome() + " com " + menosVendido.getQtdVendas()
                 + " unidades vendidas");
-        System.out.println("\nPressione qualquer tecla para voltar ao menu principal");
-        teclado.nextLine();
-        menu(teclado);
     }
 
     /**
