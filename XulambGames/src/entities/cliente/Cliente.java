@@ -143,9 +143,11 @@ public class Cliente implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(nome);
-        sb.append("\t");
+        sb.append(" - \t");
         sb.append(nomeUsuario);
-        sb.append("\t");
+        sb.append(" - \t");
+        sb.append(tipo);
+        sb.append("\n");
         sb.append(historicoCompleto());
         return sb.toString();
     }

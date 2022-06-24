@@ -186,6 +186,32 @@ public class Sistema {
             else
                 menu(teclado);
         }
+        System.out.println("\nSelecione o tipo do Cliente");
+        System.out.println("\n1 - Cliente CADASTRADO");
+        System.out.println("\n2 - Cliente EMPOLGADO");
+        System.out.println("\n3 - Cliente FANÁTICO");
+        TipoCliente tipoCliente = TipoCliente.CADASTRADO;
+        int nTipoCliente;
+        try {
+            nTipoCliente = teclado.nextInt();
+            teclado.nextLine();
+            switch (nTipoCliente) {
+                case 2:
+                    tipoCliente = TipoCliente.EMPOLGADO;
+                    break;
+                case 3:
+                    tipoCliente = TipoCliente.FANATICO;
+                    break;
+                case 1:
+                default:
+                    break;
+            }
+            cliente.alterarTipo(tipoCliente);
+        } catch (InputMismatchException ex) {
+            teclado.nextLine();
+            System.out.println("Somente opções numéricas.");
+        }
+
     }
 
     private static void menuObterHistoricoDoCliente() {
@@ -212,7 +238,7 @@ public class Sistema {
             else
                 menu(teclado);
         } else {
-            System.out.println(cliente.historicoCompleto());
+            System.out.println(cliente.toString());
         }
     }
 
@@ -232,22 +258,27 @@ public class Sistema {
         System.out.println("\n3 - Regular");
         System.out.println("\n4 - Promocao");
         CategoriaJogo categoriaJogo = CategoriaJogo.LANCAMENTO;
-        int nTipoJogo = teclado.nextInt();
-        switch (nTipoJogo) {
-            case 2:
-                categoriaJogo = CategoriaJogo.PREMIUM;
-                break;
-            case 3:
-                categoriaJogo = CategoriaJogo.REGULAR;
-                break;
-            case 4:
-                categoriaJogo = CategoriaJogo.PROMOCAO;
-                break;
-            default:
-                break;
+        try {
+            int nTipoJogo = teclado.nextInt();
+            switch (nTipoJogo) {
+                case 2:
+                    categoriaJogo = CategoriaJogo.PREMIUM;
+                    break;
+                case 3:
+                    categoriaJogo = CategoriaJogo.REGULAR;
+                    break;
+                case 4:
+                    categoriaJogo = CategoriaJogo.PROMOCAO;
+                    break;
+                default:
+                    break;
+            }
+            jogos.add(new Jogo(nome, categoriaJogo, preco, precoAtual));
+            teclado.nextLine();
+        } catch (InputMismatchException ex) {
+            teclado.nextLine();
+            System.out.println("Somente opções numéricas.");
         }
-        jogos.add(new Jogo(nome, categoriaJogo, preco, precoAtual));
-        teclado.nextLine();
     }
 
     private static void menuValorMensalVendido() {
@@ -281,7 +312,8 @@ public class Sistema {
         System.out.println("XULAMBS GAMES");
         System.out.println("======== 6 - Jogo Mais Vendido =======");
         Jogo maisVendido = jogoMaisVendido();
-        System.out.println("O Jogo mais vendido é: " + maisVendido.getNome() + " com " + maisVendido.getQtdVendas() + " unidades vendidas");
+        System.out.println("O Jogo mais vendido é: " + maisVendido.getNome() + " com " + maisVendido.getQtdVendas()
+                + " unidades vendidas");
         System.out.println("\nPressione qualquer tecla para voltar ao menu principal");
         teclado.nextLine();
         menu(teclado);
@@ -292,7 +324,8 @@ public class Sistema {
         System.out.println("XULAMBS GAMES");
         System.out.println("======== 8 - Jogo Menos Vendido =======");
         Jogo menosVendido = jogoMenosVendido();
-        System.out.println("O Jogo menos vendido é: " + menosVendido.getNome() + " com " + menosVendido.getQtdVendas() + " unidades vendidas");
+        System.out.println("O Jogo menos vendido é: " + menosVendido.getNome() + " com " + menosVendido.getQtdVendas()
+                + " unidades vendidas");
         System.out.println("\nPressione qualquer tecla para voltar ao menu principal");
         teclado.nextLine();
         menu(teclado);
@@ -300,6 +333,7 @@ public class Sistema {
 
     /**
      * Opções inválidas são desconsideradas
+     * 
      * @param opcao
      * @return
      */
